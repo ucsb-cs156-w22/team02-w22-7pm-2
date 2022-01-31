@@ -1,8 +1,5 @@
 # starter-team02: dsre-v2
 
-Production: https://w22-7pm-2-team02.herokuapp.com/
-QA: https://w22-7pm-2-team02-qa.herokuapp.com/
-
 Storybook is here:
 * Production: <https://ucsb-cs156-w22.github.io/starter-team02-docs/>
 * QA:  <https://ucsb-cs156-w22.github.io/starter-team02-docs-qa/>

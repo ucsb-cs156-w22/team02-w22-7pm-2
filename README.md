@@ -1,6 +1,12 @@
 # starter-team02: dsre-v2
 
+
 [![codecov](https://codecov.io/gh/ucsb-cs156-w22/team02-w22-7pm-2/branch/main/graph/badge.svg?token=rZT26BG1Dj)](https://codecov.io/gh/ucsb-cs156-w22/team02-w22-7pm-2)
+
+
+Production: https://w22-7pm-2-team02.herokuapp.com/
+
+QA: https://w22-7pm-2-team02-qa.herokuapp.com/
 
 Storybook is here:
 * Production: <https://ucsb-cs156-w22.github.io/starter-team02-docs/>
@@ -116,4 +122,3 @@ To access the swagger API endpoints, use:
   - Enter `psql $DATABASE_URL` and click `Run`
    
     <img alt="Enter psql $DATABASE_URL and click Run" src="https://user-images.githubusercontent.com/1119017/150206174-43193825-1afd-49f4-aeaf-cfadf0c0c6f3.png" width="400" />
-

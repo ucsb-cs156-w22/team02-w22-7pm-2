@@ -20,8 +20,7 @@ import lombok.Builder;
 public class UCSBSubject {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
+    private long id;
     private String subjectCode;
     private String subjectTranslation;
     private String deptCode;

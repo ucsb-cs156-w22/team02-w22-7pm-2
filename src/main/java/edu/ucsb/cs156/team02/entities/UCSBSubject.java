@@ -4,8 +4,8 @@ import javax.persistence.Entity;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.GeneratedValue;
-import lombok.*;
-import javax.persistence.*;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,7 +17,7 @@ import lombok.Builder;
 @NoArgsConstructor
 @Builder
 @Entity(name = "ucsb_subjects")
-public class UCSBSubjects {
+public class UCSBSubject {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -28,5 +28,4 @@ public class UCSBSubjects {
     private String collegeCode;
     private String relatedDeptCode;
     private boolean inactive;
-    // etc.
 }

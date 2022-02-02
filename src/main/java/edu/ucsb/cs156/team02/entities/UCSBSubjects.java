@@ -4,8 +4,8 @@ import javax.persistence.Entity;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.GeneratedValue;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import lombok.*;
+import javax.persistence.*;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,7 +16,7 @@ import lombok.Builder;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Entity(name = "ucsbsubjects")
+@Entity(name = "ucsb_subjects")
 public class UCSBSubjects {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,6 +24,9 @@ public class UCSBSubjects {
 
     private String subjectCode;
     private String subjectTranslation;
-    private User user; // not sure if this is correct
+    private String deptCode;
+    private String collegeCode;
+    private String relatedDeptCode;
+    private String inactive;
     // etc.
 }

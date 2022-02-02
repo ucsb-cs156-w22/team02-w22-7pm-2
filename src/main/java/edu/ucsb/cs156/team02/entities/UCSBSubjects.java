@@ -24,6 +24,6 @@ public class UCSBSubjects {
 
     private String subjectCode;
     private String subjectTranslation;
-    private User user;
+    private User user; // not sure if this is correct
     // etc.
 }

@@ -22,4 +22,8 @@ public class UCSBSubjects {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    private String subjectCode;
+    private String subjectTranslation;
+    private User user;
+    // etc.
 }

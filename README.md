@@ -1,6 +1,8 @@
 # starter-team02: dsre-v2
 
-[codecov](https://codecov.io/gh/ucsb-cs156-w22/team02-w22-7pm-2/branch/main/graph/badge.svg?token=rZT26BG1Dj)](https://codecov.io/gh/ucsb-cs156-w22/team02-w22-7pm-2)
+
+[![codecov](https://codecov.io/gh/ucsb-cs156-w22/team02-w22-7pm-2/branch/main/graph/badge.svg?token=rZT26BG1Dj)](https://codecov.io/gh/ucsb-cs156-w22/team02-w22-7pm-2)
+
 
 Production: https://w22-7pm-2-team02.herokuapp.com/
 

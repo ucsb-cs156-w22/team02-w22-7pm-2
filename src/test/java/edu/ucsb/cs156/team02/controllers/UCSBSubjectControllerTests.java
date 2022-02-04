@@ -81,12 +81,9 @@ public class UCSBSubjectControllerTests extends ControllerTestCase {
     public void api_ucsbsubject_post__user_logged_in() throws Exception {
         // arrange
 
-        User u = currentUserService.getCurrentUser().getUser();
-
         UCSBSubject expectedSubject = UCSBSubject.builder()
                 .subjectcode("Test Subject Code")
                 .subjecttranslation("Test Subject Translation")
-                .user(u)
                 .deptcode("Test Department Code")
                 .collegecode("Test College Code")
                 .relateddeptcode("Test related department code")

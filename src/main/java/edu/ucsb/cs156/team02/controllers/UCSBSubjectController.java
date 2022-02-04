@@ -5,9 +5,11 @@ import edu.ucsb.cs156.team02.repositories.UCSBSubjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.http.ResponseEntity;
-
+import edu.ucsb.cs156.team02.services.LoggingService;
 import edu.ucsb.cs156.team02.entities.User;
 import edu.ucsb.cs156.team02.models.CurrentUser;
+import org.springframework.web.bind.annotation.DeleteMapping;
+
 import edu.ucsb.cs156.team02.services.CurrentUserService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,6 +39,16 @@ import java.util.Optional;
 @RestController
 @Slf4j
 public class UCSBSubjectController extends ApiController{
+    public class UCSBSubjectOrError {
+        Long id;
+        UCSBSubject ucsbsubject;
+        ResponseEntity<String> error;
+
+        public UCSBSubjectOrError(Long id) {
+            this.id = id;
+        }
+    }
+
     @ApiOperation(value = "Get a list of UCSB subjects")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("")
@@ -56,17 +68,18 @@ public class UCSBSubjectController extends ApiController{
     @PostMapping("/post")
     public UCSBSubject postUCSBSubject(
             @ApiParam("subject Translation") @RequestParam String subjectTranslation,
-            @ApiParam("id") @RequestParam long id,
+            @ApiParam("id") @RequestParam Long id,
             @ApiParam("dept Code") @RequestParam String deptCode,
             @ApiParam("college Code") @RequestParam String collegeCode,
             @ApiParam("subject Code") @RequestParam String subjectCode,
             @ApiParam("related Dept Code") @RequestParam String relatedDeptCode,
             @ApiParam("inactive") @RequestParam Boolean inactive) {
         loggingService.logMethod();
-        CurrentUser currentUser = getCurrentUser();
-        log.info("currentUser={}", currentUser);
+        //CurrentUser currentUser = getCurrentUser();
+        //log.info("currentUser={}", currentUser);
 
         UCSBSubject ucsbsubject = new UCSBSubject();
+        //ucsbsubject.setUser(currentUser.getUser());
         ucsbsubject.setId(id);
         ucsbsubject.setSubjectCode(subjectCode);
         ucsbsubject.setSubjectTranslation(subjectTranslation);
@@ -77,5 +90,4 @@ public class UCSBSubjectController extends ApiController{
         UCSBSubject savedUCSBSubject = ucsbsubjectRepository.save(ucsbsubject);
         return savedUCSBSubject;
     }
-
 }

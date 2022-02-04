@@ -47,6 +47,12 @@ public class UCSBSubjectControllerTests extends ControllerTestCase {
                 .andExpect(status().is(403));
     }
 
+    @WithMockUser(roles = { "USER" })
+    @Test
+    public void api_ucsbsubject_all__user_logged_in__returns_200() throws Exception {
+        mockMvc.perform(get("/api/UCSBSubjects/all"))
+                .andExpect(status().isOk());
+    }
 
     @Test
     public void api_ucsbsubject_all__returns_all_ucsbsubjects() throws Exception {
@@ -95,7 +101,7 @@ public class UCSBSubjectControllerTests extends ControllerTestCase {
 
         // act
         MvcResult response = mockMvc.perform(
-                post("/api/UCSBSubjects/post?subjectCode=Test Subject Code&subjectTranslation=Test Subject Translation&deptCode=Test Department Code&collegeCode=Test College Code&relatedDeptCode=Test related department code&inactive=true")
+                post("/api/UCSBSubjects/post?subjectCode=Test Subject Code&subjectTranslation=Test Subject Translation&deptCode=Test Department Code&collegeCode=Test College Code&relatedDeptCode=Test related department code")
                         .with(csrf()))
                 .andExpect(status().isOk()).andReturn();
 

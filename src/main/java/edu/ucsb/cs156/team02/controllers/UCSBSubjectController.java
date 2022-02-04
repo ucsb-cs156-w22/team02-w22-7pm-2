@@ -39,29 +39,20 @@ import java.util.Optional;
 @RestController
 @Slf4j
 public class UCSBSubjectController extends ApiController{
-    public class UCSBSubjectOrError {
-        Long id;
-        UCSBSubject ucsbsubject;
-        ResponseEntity<String> error;
-
-        public UCSBSubjectOrError(Long id) {
-            this.id = id;
-        }
-    }
-
-    @ApiOperation(value = "Get a list of UCSB subjects")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @GetMapping("")
-    public CurrentUser getCurrentUser() {
-        return super.getCurrentUser();
-    }
-
-
     @Autowired
     UCSBSubjectRepository ucsbsubjectRepository;
 
     @Autowired
     ObjectMapper mapper;
+
+    @ApiOperation(value = "Get a list of UCSB subjects")
+    //@PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping("/all")
+        public Iterable<UCSBSubject> allUCSBSubjects() {
+        //loggingService.logMethod();
+        Iterable<UCSBSubject> subjects = ucsbsubjectRepository.findAll();
+        return subjects;
+    }
 
     @ApiOperation(value = "Create a new UCSB subject")
     @PreAuthorize("hasRole('ROLE_USER')")
@@ -90,4 +81,6 @@ public class UCSBSubjectController extends ApiController{
         UCSBSubject savedUCSBSubject = ucsbsubjectRepository.save(ucsbsubject);
         return savedUCSBSubject;
     }
+
+
 }

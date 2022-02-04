@@ -5,7 +5,7 @@ import edu.ucsb.cs156.team02.repositories.UCSBSubjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.http.ResponseEntity;
-
+import edu.ucsb.cs156.team02.services.LoggingService;
 import edu.ucsb.cs156.team02.entities.User;
 import edu.ucsb.cs156.team02.models.CurrentUser;
 import edu.ucsb.cs156.team02.services.CurrentUserService;
@@ -39,7 +39,7 @@ import java.util.Optional;
 public class UCSBSubjectController extends ApiController{
     public class UCSBSubjectOrError {
         Long id;
-        UCSBSubject subjectcode;
+        UCSBSubject ucsbsubject;
         ResponseEntity<String> error;
 
         public UCSBSubjectOrError(Long id) {
@@ -66,6 +66,7 @@ public class UCSBSubjectController extends ApiController{
     @PostMapping("/post")
     public UCSBSubject postUCSBSubject(
             @ApiParam("subject Translation") @RequestParam String subjectTranslation,
+            @ApiParam("id") @RequestParam Long id,
             @ApiParam("dept Code") @RequestParam String deptCode,
             @ApiParam("college Code") @RequestParam String collegeCode,
             @ApiParam("subject Code") @RequestParam String subjectCode,
@@ -76,6 +77,8 @@ public class UCSBSubjectController extends ApiController{
         log.info("currentUser={}", currentUser);
 
         UCSBSubject ucsbsubject = new UCSBSubject();
+        ucsbsubject.setUser(currentUser.getUser());
+        ucsbsubject.setId(id);
         ucsbsubject.setSubjectCode(subjectCode);
         ucsbsubject.setSubjectTranslation(subjectTranslation);
         ucsbsubject.setDeptCode(deptCode);
@@ -97,6 +100,7 @@ public class UCSBSubjectController extends ApiController{
         CurrentUser currentUser = getCurrentUser();
         User user = currentUser.getUser();
 
+
         UCSBSubjectOrError ucsbsub = new UCSBSubjectOrError(id);
 
         ucsbsub = doesUCSBSubjectExist(ucsbsub);
@@ -115,42 +119,35 @@ public class UCSBSubjectController extends ApiController{
         return ResponseEntity.ok().body(body);
     }
 
-        public UCSBSubjectOrError doesUCSBSubjectExist(UCSBSubjectOrError ucsbsub) {
+        public UCSBSubjectOrError doesUCSBSubjectExist(UCSBSubjectOrError ucsbsub_error) {
 
-        Optional<UCSBSubject> optionalUCSBSubject = UCSBSubjectRepository.findById(ucsbsub.id);
+            Optional<UCSBSubject> optionalUCSBSubject = ucsbsubjectRepository.findById(ucsbsub_error.id);
 
-        if (optionalUCSBSubject.isEmpty()) {
-            ucsbsub.error = ResponseEntity
-                    .badRequest()
-                    .body(String.format("ucsb subject with id %d not found", ucsbsub.id));
-        } else {
-            ucsbsub.subjectCode = optionalUCSBSubject.get();
+            if (optionalUCSBSubject.isEmpty()) {
+                ucsbsub_error.error = ResponseEntity
+                        .badRequest()
+                        .body(String.format("ucsb subject with id %d not found", ucsbsub_error.id));
+            } else {
+                ucsbsub_error.ucsbsubject = optionalUCSBSubject.get();
+            }
+            return ucsbsub_error;
         }
-        return ucsbsub;
-    }
 
-    /**
-     * Pre-conditions: toe.todo is non-null and refers to the todo with id toe.id,
-     * and toe.error is null
-     * 
-     * Post-condition: if todo belongs to current user, then error is still null.
-     * Otherwise error is a suitable
-     * return value.
-     */
-    public UCSBSubjectOrError doesUCSBSubjectBelongToCurrentUser(UCSBSubjectOrError ucsbsub) {
+
+    public UCSBSubjectOrError doesUCSBSubjectBelongToCurrentUser(UCSBSubjectOrError ucsbsub_error) {
         CurrentUser currentUser = getCurrentUser();
         log.info("currentUser={}", currentUser);
 
         Long currentUserId = currentUser.getUser().getId();
-        Long todoUserId = ucsbsub.subjectCode.getUser().getId();
-        log.info("currentUserId={} todoUserId={}", currentUserId, todoUserId);
+        Long UCSBSubjectUserId = ucsbsub_error.ucsbsubject.getUser().getId();
+        log.info("currentUserId={} UCSBSubjectUserId={}", currentUserId, UCSBSubjectUserId);
 
-        if (todoUserId != currentUserId) {
-            ucsbsub.error = ResponseEntity
+        if (UCSBSubjectUserId != currentUserId) {
+            ucsbsub_error.error = ResponseEntity
                     .badRequest()
-                    .body(String.format("todo with id %d not found", ucsbsub.id));
+                    .body(String.format("UCSB subject with id %d not found", ucsbsub_error.id));
         }
-        return ucsbsub;
+        return ucsbsub_error;
     }
 
 }

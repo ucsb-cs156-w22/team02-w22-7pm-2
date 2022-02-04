@@ -49,13 +49,13 @@ public class UCSBSubjectControllerTests extends ControllerTestCase {
 
 
     @Test
-    public void api_ucsbsubject_all__admin_logged_in__returns_all_ucsbsubjects() throws Exception {
+    public void api_ucsbsubject_all__returns_all_ucsbsubjects() throws Exception {
 
         // arrange
 
-        UCSBSubject subject1 = UCSBSubject.builder().subjectcode("SC 1").subjecttranslation("ST 1").deptcode("DC 1").collegecode("CC 1").relateddeptcode("RDC 1").inactive(false).id(1L).build();
-        UCSBSubject subject2 = UCSBSubject.builder().subjectcode("SC 2").subjecttranslation("ST 2").deptcode("DC 2").collegecode("CC 2").relateddeptcode("RDC 2").inactive(false).id(2L).build();
-        UCSBSubject subject3 = UCSBSubject.builder().subjectcode("SC 3").subjecttranslation("ST 3").deptcode("DC 3").collegecode("CC 3").relateddeptcode("RDC 3").inactive(false).id(3L).build();
+        UCSBSubject subject1 = UCSBSubject.builder().subjectCode("SC 1").subjectTranslation("ST 1").deptCode("DC 1").collegeCode("CC 1").relatedDeptCode("RDC 1").inactive(false).id(1L).build();
+        UCSBSubject subject2 = UCSBSubject.builder().subjectCode("SC 2").subjectTranslation("ST 2").deptCode("DC 2").collegeCode("CC 2").relatedDeptCode("RDC 2").inactive(false).id(2L).build();
+        UCSBSubject subject3 = UCSBSubject.builder().subjectCode("SC 3").subjectTranslation("ST 3").deptCode("DC 3").collegeCode("CC 3").relatedDeptCode("RDC 3").inactive(false).id(3L).build();
 
         ArrayList<UCSBSubject> expectedUCSBSubjects = new ArrayList<>();
         expectedUCSBSubjects.addAll(Arrays.asList(subject1, subject2, subject3));
@@ -82,11 +82,11 @@ public class UCSBSubjectControllerTests extends ControllerTestCase {
         // arrange
 
         UCSBSubject expectedSubject = UCSBSubject.builder()
-                .subjectcode("Test Subject Code")
-                .subjecttranslation("Test Subject Translation")
-                .deptcode("Test Department Code")
-                .collegecode("Test College Code")
-                .relateddeptcode("Test related department code")
+                .subjectCode("Test Subject Code")
+                .subjectTranslation("Test Subject Translation")
+                .deptCode("Test Department Code")
+                .collegeCode("Test College Code")
+                .relatedDeptCode("Test related department code")
                 .inactive(true)
                 .id(0L)
                 .build();
@@ -95,7 +95,7 @@ public class UCSBSubjectControllerTests extends ControllerTestCase {
 
         // act
         MvcResult response = mockMvc.perform(
-                post("/api/UCSBSubjects/post?subjectcode=Test Subject Code&subjecttranslation=Test Subject Translation&deptcode=Test Department Code&collegecode=Test College Code&relateddeptcode=Test related department code")
+                post("/api/UCSBSubjects/post?subjectCode=Test Subject Code&subjectTranslation=Test Subject Translation&deptCode=Test Department Code&collegeCode=Test College Code&relatedDeptCode=Test related department code")
                         .with(csrf()))
                 .andExpect(status().isOk()).andReturn();
 

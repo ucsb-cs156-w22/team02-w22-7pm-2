@@ -70,10 +70,10 @@ public class UCSBSubjectController extends ApiController{
 
         UCSBSubject ucsbsubject = new UCSBSubject();
         //ucsbsubject.setUser(currentUser.getUser());
-        ucsbsubject.setSubjectCode(subjectCode);
         ucsbsubject.setSubjectTranslation(subjectTranslation);
         ucsbsubject.setDeptCode(deptCode);
         ucsbsubject.setCollegeCode(collegeCode);
+        ucsbsubject.setSubjectCode(subjectCode);
         ucsbsubject.setRelatedDeptCode(relatedDeptCode);
         ucsbsubject.setInactive(inactive);
         UCSBSubject savedUCSBSubject = ucsbsubjectRepository.save(ucsbsubject);

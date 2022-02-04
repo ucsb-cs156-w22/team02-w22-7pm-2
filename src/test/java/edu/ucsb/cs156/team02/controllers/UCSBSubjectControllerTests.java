@@ -29,7 +29,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@WebMvcTest(controllers = TodosController.class)
+@WebMvcTest(controllers = UCSBSubjectController.class)
 @Import(TestConfig.class)
 public class UCSBSubjectControllerTests extends ControllerTestCase {
 
@@ -57,7 +57,7 @@ public class UCSBSubjectControllerTests extends ControllerTestCase {
         UCSBSubject subject2 = UCSBSubject.builder().subjectcode("SC 2").subjecttranslation("ST 2").deptcode("DC 2").collegecode("CC 2").relateddeptcode("RDC 2").user(u2).inactive(false).id(2L).build();
         UCSBSubject subject3 = UCSBSubject.builder().subjectcode("SC 3").subjecttranslation("ST 3").deptcode("DC 3").collegecode("CC 3").relateddeptcode("RDC 3").user(u).inactive(false).id(3L).build();
 
-        ArrayList<Todo> expectedUCSBSubjects = new ArrayList<>();
+        ArrayList<UCSBSubject> expectedUCSBSubjects = new ArrayList<>();
         expectedUCSBSubjects.addAll(Arrays.asList(subject1, subject2, subject3));
 
         when(ucsbsubjectRepository.findAll()).thenReturn(expectedUCSBSubjects);

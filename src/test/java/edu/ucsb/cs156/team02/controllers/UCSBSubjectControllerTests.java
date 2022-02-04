@@ -88,10 +88,10 @@ public class UCSBSubjectControllerTests extends ControllerTestCase {
         // arrange
 
         UCSBSubject expectedSubject = UCSBSubject.builder()
-                .subjectCode("Test Subject Code")
                 .subjectTranslation("Test Subject Translation")
                 .deptCode("Test Department Code")
                 .collegeCode("Test College Code")
+                .subjectCode("Test Subject Code")
                 .relatedDeptCode("Test related department code")
                 .inactive(true)
                 .id(0L)
@@ -101,7 +101,7 @@ public class UCSBSubjectControllerTests extends ControllerTestCase {
 
         // act
         MvcResult response = mockMvc.perform(
-                post("/api/UCSBSubjects/post?subjectCode=Test Subject Code&subjectTranslation=Test Subject Translation&deptCode=Test Department Code&collegeCode=Test College Code&relatedDeptCode=Test related department code")
+                post("/api/UCSBSubjects/post?subjectTranslation=Test Subject Translation&deptCode=Test Department Code&collegeCode=Test College Code&subjectCode=Test Subject Code&relatedDeptCode=Test related department code")
                         .with(csrf()))
                 .andExpect(status().isOk()).andReturn();
 

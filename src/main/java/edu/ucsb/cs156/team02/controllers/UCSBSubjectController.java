@@ -58,12 +58,12 @@ public class UCSBSubjectController extends ApiController{
     @PreAuthorize("hasRole('ROLE_USER')")
     @PostMapping("/post")
     public UCSBSubject postUCSBSubject(
-            @ApiParam("subject Translation") @RequestParam String subjectTranslation,
+            @ApiParam("subjectTranslation") @RequestParam String subjectTranslation,
             @ApiParam("id") @RequestParam Long id,
-            @ApiParam("dept Code") @RequestParam String deptCode,
-            @ApiParam("college Code") @RequestParam String collegeCode,
-            @ApiParam("subject Code") @RequestParam String subjectCode,
-            @ApiParam("related Dept Code") @RequestParam String relatedDeptCode,
+            @ApiParam("deptCode") @RequestParam String deptCode,
+            @ApiParam("collegeCode") @RequestParam String collegeCode,
+            @ApiParam("subjectCode") @RequestParam String subjectCode,
+            @ApiParam("relatedDeptCode") @RequestParam String relatedDeptCode,
             @ApiParam("inactive") @RequestParam Boolean inactive) {
         loggingService.logMethod();
         //CurrentUser currentUser = getCurrentUser();

@@ -3,6 +3,8 @@ import edu.ucsb.cs156.team02.entities.UCSBSubject;
 import edu.ucsb.cs156.team02.repositories.UCSBSubjectRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import org.springframework.http.ResponseEntity;
 
 import edu.ucsb.cs156.team02.entities.User;
 import edu.ucsb.cs156.team02.models.CurrentUser;
@@ -11,9 +13,11 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.web.bind.annotation.PutMapping;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import lombok.extern.slf4j.Slf4j;
 
@@ -21,8 +25,10 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 
+import javax.validation.Valid;
 import java.lang.String;
 import java.lang.Boolean;
+import java.util.Optional;
 
 
 
@@ -50,6 +56,7 @@ public class UCSBSubjectController extends ApiController{
     @PostMapping("/post")
     public UCSBSubject postUCSBSubject(
             @ApiParam("subject Translation") @RequestParam String subjectTranslation,
+            @ApiParam("id") @RequestParam long id,
             @ApiParam("dept Code") @RequestParam String deptCode,
             @ApiParam("college Code") @RequestParam String collegeCode,
             @ApiParam("subject Code") @RequestParam String subjectCode,
@@ -60,6 +67,7 @@ public class UCSBSubjectController extends ApiController{
         log.info("currentUser={}", currentUser);
 
         UCSBSubject ucsbsubject = new UCSBSubject();
+        ucsbsubject.setId(id);
         ucsbsubject.setSubjectCode(subjectCode);
         ucsbsubject.setSubjectTranslation(subjectTranslation);
         ucsbsubject.setDeptCode(deptCode);
@@ -69,6 +77,5 @@ public class UCSBSubjectController extends ApiController{
         UCSBSubject savedUCSBSubject = ucsbsubjectRepository.save(ucsbsubject);
         return savedUCSBSubject;
     }
-
 
 }

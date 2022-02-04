@@ -69,7 +69,7 @@ public class UCSBSubjectControllerTests extends ControllerTestCase {
         when(ucsbsubjectRepository.findAll()).thenReturn(expectedUCSBSubjects);
 
         // act
-        MvcResult response = mockMvc.perform(get("/api/ucsbsubjects/all"))
+        MvcResult response = mockMvc.perform(get("/api/UCSBSubjects/all"))
                 .andExpect(status().isOk()).andReturn();
 
         // assert

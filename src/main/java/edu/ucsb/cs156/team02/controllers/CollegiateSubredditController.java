@@ -1,7 +1,7 @@
 package edu.ucsb.cs156.team02.controllers;
 
-import edu.ucsb.cs156.team02.entities.CollegeSubreddit;
-import edu.ucsb.cs156.team02.repositories.CollegeSubredditRepository;
+import edu.ucsb.cs156.team02.entities.CollegiateSubreddit;
+import edu.ucsb.cs156.team02.repositories.CollegiateSubredditRepository;
 import edu.ucsb.cs156.team02.entities.User;
 import edu.ucsb.cs156.team02.models.CurrentUser;
 import io.swagger.annotations.Api;
@@ -27,42 +27,42 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 import java.util.Optional;
 
-@Api(description = "Table of College Subreddits from https://github.com/karlding/college-subreddits")
+@Api(description = "Table of Collegiate Subreddits from https://github.com/karlding/college-subreddits")
 @Slf4j
 @RestController
 @RequestMapping("/api/collegiateSubreddits")
 public class CollegiateSubredditController extends ApiController {
 
     @Autowired
-    CollegeSubredditRepository CollegeSubredditRepository;
+    CollegiateSubredditRepository collegiateSubredditRepository;
 
     @Autowired
     ObjectMapper mapper;
 
-    @ApiOperation(value = "List all subreddits in the database")
-    //@PreAuthorize("hasRole('ROLE_USER')")
+    @ApiOperation(value = "List all collegiate subreddits in the database")
+    //@PreAuthorize("hasRole('ROLE_USER')")  // ah - "Allowing everyone to find all the subreddits, even if not logged in"
     @GetMapping("/all")
-    public Iterable<CollegeSubreddit> allCollegeSubreddits() {
+    public Iterable<CollegiateSubreddit> allCollegiateSubreddits() {
         //loggingService.logMethod();
-        Iterable<CollegeSubreddit> coSubs = CollegeSubredditRepository.findAll();
-        return coSubs;
+        Iterable<CollegiateSubreddit> reddits = collegiateSubredditRepository.findAll();
+        return reddits;
     }
 
-    @ApiOperation(value = "Create a new College Subreddit")
-    //@PreAuthorize("hasRole('ROLE_USER')")
+    @ApiOperation(value = "Create a new Collegiate subreddit")
+    @PreAuthorize("hasRole('ROLE_USER')")
     @PostMapping("/post")
-    public CollegeSubreddit postCollegeSubreddit(
+    public CollegiateSubreddit postCollegiateSubreddit(
             @ApiParam("name") @RequestParam String name,
             @ApiParam("location") @RequestParam String location,
             @ApiParam("subreddit") @RequestParam String subreddit) {
-        //loggingService.logMethod();
+        loggingService.logMethod();
 
-        CollegeSubreddit coSub = new CollegeSubreddit();
-        coSub.setName(name);
-        coSub.setLocation(location);
-        coSub.setSubreddit(subreddit);
-        CollegeSubreddit savedCoSub = CollegeSubredditRepository.save(coSub);
-        return savedCoSub;
+        CollegiateSubreddit reddit = new CollegiateSubreddit();
+        reddit.setName(name);
+        reddit.setLocation(location);
+        reddit.setSubreddit(subreddit);
+        CollegiateSubreddit savedReddit = collegiateSubredditRepository.save(reddit);
+        return savedReddit;
     }
 
 }

@@ -59,9 +59,9 @@ public class UCSBSubjectControllerTests extends ControllerTestCase {
 
         // arrange
 
-        UCSBSubject subject1 = UCSBSubject.builder().subjectCode("SC 1").subjectTranslation("ST 1").deptCode("DC 1").collegeCode("CC 1").relatedDeptCode("RDC 1").inactive(false).id(1L).build();
-        UCSBSubject subject2 = UCSBSubject.builder().subjectCode("SC 2").subjectTranslation("ST 2").deptCode("DC 2").collegeCode("CC 2").relatedDeptCode("RDC 2").inactive(false).id(2L).build();
-        UCSBSubject subject3 = UCSBSubject.builder().subjectCode("SC 3").subjectTranslation("ST 3").deptCode("DC 3").collegeCode("CC 3").relatedDeptCode("RDC 3").inactive(false).id(3L).build();
+        UCSBSubject subject1 = UCSBSubject.builder().subjectTranslation("ST 1").deptCode("DC 1").collegeCode("CC 1").subjectCode("SC 1").relatedDeptCode("RDC 1").inactive(false).id(1L).build();
+        UCSBSubject subject2 = UCSBSubject.builder().subjectTranslation("ST 2").deptCode("DC 2").collegeCode("CC 2").subjectCode("SC 2").relatedDeptCode("RDC 2").inactive(false).id(2L).build();
+        UCSBSubject subject3 = UCSBSubject.builder().subjectTranslation("ST 3").deptCode("DC 3").collegeCode("CC 3").subjectCode("SC 3").relatedDeptCode("RDC 3").inactive(false).id(3L).build();
 
         ArrayList<UCSBSubject> expectedUCSBSubjects = new ArrayList<>();
         expectedUCSBSubjects.addAll(Arrays.asList(subject1, subject2, subject3));

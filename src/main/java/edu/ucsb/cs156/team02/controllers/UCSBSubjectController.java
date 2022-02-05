@@ -36,6 +36,17 @@ import java.util.Optional;
 @RestController
 @Slf4j
 public class UCSBSubjectController extends ApiController{
+
+    public class UCSBSubjectOrError {
+        Long id;
+        UCSBSubject sub;
+        ResponseEntity<String> error;
+
+        public UCSBSubjectOrError(Long id) {
+            this.id = id;
+        }
+    }
+
     @Autowired
     UCSBSubjectRepository ucsbsubjectRepository;
 
@@ -43,13 +54,14 @@ public class UCSBSubjectController extends ApiController{
     ObjectMapper mapper;
 
     @ApiOperation(value = "Get a list of UCSB subjects")
-    //@PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/all")
-        public Iterable<UCSBSubject> allUCSBSubjects() {
-        //loggingService.logMethod();
-        Iterable<UCSBSubject> subjects = ucsbsubjectRepository.findAll();
-        return subjects;
-    }
+        public Iterable<UCSBSubject> thisUsersUCSBSubjects() {
+            loggingService.logMethod();
+            UCSBSubject ucsbsub = getUCSBSubject();
+            Iterable<UCSBSubject> subjects = ucsbsubjectRepository.findBySubjectCode(ucsbsub.getSubjectCode());
+            return subjects;
+        }
 
     @ApiOperation(value = "Create a new UCSB subject")
     //@PreAuthorize("hasRole('ROLE_USER')")
@@ -62,9 +74,12 @@ public class UCSBSubjectController extends ApiController{
             @ApiParam("related Dept Code") @RequestParam String relatedDeptCode,
             @ApiParam("inactive") @RequestParam Boolean inactive) {
         loggingService.logMethod();
+        CurrentUser currentUser = getCurrentUser();
+        log.info("currentUser={}", currentUser);
 
 
         UCSBSubject ucsbsubject = new UCSBSubject();
+        ucsbsubject.setUser(currentUser.getUser());
         ucsbsubject.setSubjectTranslation(subjectTranslation);
         ucsbsubject.setDeptCode(deptCode);
         ucsbsubject.setCollegeCode(collegeCode);
@@ -83,8 +98,8 @@ public class UCSBSubjectController extends ApiController{
             @RequestBody @Valid UCSBSubject incomingUCSBsubject) throws JsonProcessingException {
         loggingService.logMethod();
 
-        //CurrentUser currentUser = getCurrentUser();
-        //User user = currentUser.getUser();
+        CurrentUser currentUser = getCurrentUser();
+        User user = currentUser.getUser();
 
 
         UCSBSubjectOrError ucsbsub = new UCSBSubjectOrError(id);
@@ -114,7 +129,7 @@ public class UCSBSubjectController extends ApiController{
                         .badRequest()
                         .body(String.format("ucsb subject with id %d not found", ucsbsub_error.id));
             } else {
-                ucsbsub_error.ucsbsubject = optionalUCSBSubject.get();
+                ucsbsub_error.sub = optionalUCSBSubject.get();
             }
             return ucsbsub_error;
         }
@@ -125,7 +140,7 @@ public class UCSBSubjectController extends ApiController{
         log.info("currentUser={}", currentUser);
 
         Long currentUserId = currentUser.getUser().getId();
-        Long UCSBSubjectUserId = ucsbsub_error.ucsbsubject.getUser().getId();
+        Long UCSBSubjectUserId = ucsbsub_error.sub.getUser().getId();
         log.info("currentUserId={} UCSBSubjectUserId={}", currentUserId, UCSBSubjectUserId);
 
         if (UCSBSubjectUserId != currentUserId) {

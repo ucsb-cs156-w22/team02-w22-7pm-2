@@ -31,58 +31,44 @@ import java.lang.Boolean;
 import java.util.Optional;
 
 
-
 @Api(description="UCSB Subject Information")
 @RequestMapping("/api/UCSBSubjects")
 @RestController
 @Slf4j
 public class UCSBSubjectController extends ApiController{
-    public class UCSBSubjectOrError {
-        Long id;
-        UCSBSubject ucsbsubject;
-        ResponseEntity<String> error;
-
-        public UCSBSubjectOrError(Long id) {
-            this.id = id;
-        }
-    }
-
-    @ApiOperation(value = "Get a list of UCSB subjects")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @GetMapping("")
-    public CurrentUser getCurrentUser() {
-        return super.getCurrentUser();
-    }
-
-
     @Autowired
     UCSBSubjectRepository ucsbsubjectRepository;
 
     @Autowired
     ObjectMapper mapper;
 
+    @ApiOperation(value = "Get a list of UCSB subjects")
+    //@PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping("/all")
+        public Iterable<UCSBSubject> allUCSBSubjects() {
+        //loggingService.logMethod();
+        Iterable<UCSBSubject> subjects = ucsbsubjectRepository.findAll();
+        return subjects;
+    }
+
     @ApiOperation(value = "Create a new UCSB subject")
-    @PreAuthorize("hasRole('ROLE_USER')")
+    //@PreAuthorize("hasRole('ROLE_USER')")
     @PostMapping("/post")
     public UCSBSubject postUCSBSubject(
             @ApiParam("subject Translation") @RequestParam String subjectTranslation,
-            @ApiParam("id") @RequestParam Long id,
             @ApiParam("dept Code") @RequestParam String deptCode,
             @ApiParam("college Code") @RequestParam String collegeCode,
             @ApiParam("subject Code") @RequestParam String subjectCode,
             @ApiParam("related Dept Code") @RequestParam String relatedDeptCode,
             @ApiParam("inactive") @RequestParam Boolean inactive) {
         loggingService.logMethod();
-        CurrentUser currentUser = getCurrentUser();
-        log.info("currentUser={}", currentUser);
+
 
         UCSBSubject ucsbsubject = new UCSBSubject();
-        ucsbsubject.setUser(currentUser.getUser());
-        ucsbsubject.setId(id);
-        ucsbsubject.setSubjectCode(subjectCode);
         ucsbsubject.setSubjectTranslation(subjectTranslation);
         ucsbsubject.setDeptCode(deptCode);
         ucsbsubject.setCollegeCode(collegeCode);
+        ucsbsubject.setSubjectCode(subjectCode);
         ucsbsubject.setRelatedDeptCode(relatedDeptCode);
         ucsbsubject.setInactive(inactive);
         UCSBSubject savedUCSBSubject = ucsbsubjectRepository.save(ucsbsubject);
@@ -91,14 +77,14 @@ public class UCSBSubjectController extends ApiController{
 
     @ApiOperation(value = "Update a UCSB subject (if it belongs to current user)")
     @PreAuthorize("hasRole('ROLE_USER')")
-    @PutMapping("")
+    @PutMapping("?id=123")
     public ResponseEntity<String> putUCSBSubjectById(
             @ApiParam("id") @RequestParam Long id,
             @RequestBody @Valid UCSBSubject incomingUCSBsubject) throws JsonProcessingException {
         loggingService.logMethod();
 
-        CurrentUser currentUser = getCurrentUser();
-        User user = currentUser.getUser();
+        //CurrentUser currentUser = getCurrentUser();
+        //User user = currentUser.getUser();
 
 
         UCSBSubjectOrError ucsbsub = new UCSBSubjectOrError(id);

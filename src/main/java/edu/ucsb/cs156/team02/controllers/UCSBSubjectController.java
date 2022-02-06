@@ -54,7 +54,7 @@ public class UCSBSubjectController extends ApiController{
     ObjectMapper mapper;
 
     @ApiOperation(value = "Get a list of UCSB subjects")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    //@PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/all")
         public Iterable<UCSBSubject> thisUsersUCSBSubjects() {
             loggingService.logMethod();
@@ -64,7 +64,7 @@ public class UCSBSubjectController extends ApiController{
         }
 
     @ApiOperation(value = "Create a new UCSB subject")
-    @PreAuthorize("hasRole('ROLE_USER')")
+    //@PreAuthorize("hasRole('ROLE_USER')")
     @PostMapping("/post")
     public UCSBSubject postUCSBSubject(
             @ApiParam("subject Translation") @RequestParam String subjectTranslation,

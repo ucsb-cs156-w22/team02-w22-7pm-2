@@ -77,7 +77,6 @@ public class UCSBSubjectController extends ApiController{
         //CurrentUser currentUser = getCurrentUser();
         //log.info("currentUser={}", currentUser);
 
-
         UCSBSubject ucsbsubject = new UCSBSubject();
         //ucsbsubject.setUser(currentUser.getUser());
         ucsbsubject.setSubjectTranslation(subjectTranslation);
@@ -125,3 +124,5 @@ public class UCSBSubjectController extends ApiController{
 
 
 }
+
+

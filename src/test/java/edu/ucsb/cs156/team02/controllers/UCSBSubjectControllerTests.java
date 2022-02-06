@@ -39,18 +39,6 @@ public class UCSBSubjectControllerTests extends ControllerTestCase {
     @MockBean
     UserRepository userRepository;
 
-<<<<<<< HEAD
-=======
-    // Authorization tests for /api/UCSBSubjects/post
-
-/*    @Test
-    public void api_ucsbsubject_post__logged_out__returns_403() throws Exception {
-        mockMvc.perform(post("/api/UCSBSubjects/post"))
-                .andExpect(status().is(403));
-    }
-*/
-
->>>>>>> origin
     @Test
     public void api_ucsbsubject_all__returns_all_ucsbsubjects() throws Exception {
 

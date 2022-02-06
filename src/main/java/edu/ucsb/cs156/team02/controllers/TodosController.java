@@ -3,7 +3,7 @@ package edu.ucsb.cs156.team02.controllers;
 import edu.ucsb.cs156.team02.entities.Todo;
 import edu.ucsb.cs156.team02.entities.User;
 import edu.ucsb.cs156.team02.models.CurrentUser;
-import edu.ucsb.cs156.team02.repositories.TodoRepository;
+import edu.ucsb.cs156.team02.repositories.CollegiateSubredditRepository;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -50,7 +50,7 @@ public class TodosController extends ApiController {
     }
 
     @Autowired
-    TodoRepository todoRepository;
+    CollegiateSubredditRepository todoRepository;
 
     @Autowired
     ObjectMapper mapper;

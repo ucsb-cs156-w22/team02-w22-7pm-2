@@ -36,7 +36,6 @@ import java.util.Optional;
 @RestController
 @Slf4j
 public class UCSBSubjectController extends ApiController{
-
     public class UCSBSubjectOrError {
         Long id;
         UCSBSubject sub;
@@ -76,7 +75,6 @@ public class UCSBSubjectController extends ApiController{
         loggingService.logMethod();
         //CurrentUser currentUser = getCurrentUser();
         //log.info("currentUser={}", currentUser);
-
 
         UCSBSubject ucsbsubject = new UCSBSubject();
         //ucsbsubject.setUser(currentUser.getUser());

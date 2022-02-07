@@ -85,7 +85,7 @@ public class UCSBSubjectController extends ApiController{
         return savedUCSBSubject;
     }
 
- /*   @ApiOperation(value = "Get a UCSB Subject with given id")
+    @ApiOperation(value = "Get a UCSB Subject with given id")
     //@PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("")
     public ResponseEntity<String> getUCSBSubjectById(
@@ -102,7 +102,7 @@ public class UCSBSubjectController extends ApiController{
         String body = mapper.writeValueAsString(ucsbsub_error.sub);
         return ResponseEntity.ok().body(body);
     }
-*/
+/*
     @ApiOperation(value = "Update a single UCSBSubject")
     @PutMapping("")
     public ResponseEntity<String> putSubjectById(
@@ -121,7 +121,7 @@ public class UCSBSubjectController extends ApiController{
 
         String body = mapper.writeValueAsString(incomingUCSBSubject);
         return ResponseEntity.ok().body(body);
-    }
+    }*/
 
         public UCSBSubjectOrError doesUCSBSubjectExist(UCSBSubjectOrError ucsbsub_error) {
 

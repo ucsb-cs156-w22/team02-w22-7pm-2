@@ -80,7 +80,7 @@ public class UCSBSubjectControllerTests extends ControllerTestCase {
                 .collegeCode("Test College Code")
                 .subjectCode("Test Subject Code")
                 .relatedDeptCode("Test related department code")
-                .inactive(true)
+                .inactive(false)
                 .id(0L)
                 .build();
 
@@ -88,7 +88,7 @@ public class UCSBSubjectControllerTests extends ControllerTestCase {
 
         // act
         MvcResult response = mockMvc.perform(
-                post("/api/UCSBSubjects/post?subjectTranslation=Test Subject Translation&deptCode=Test Department Code&collegeCode=Test College Code&subjectCode=Test Subject Code&relatedDeptCode=Test related department code&inactive=true&id=0L")
+                post("/api/UCSBSubjects/post?subjectTranslation=Test Subject Translation&deptCode=Test Department Code&collegeCode=Test College Code&subjectCode=Test Subject Code&relatedDeptCode=Test related department code&inactive=false&id=0L")
                         .with(csrf()))
                 .andExpect(status().isOk()).andReturn();
 
@@ -112,7 +112,7 @@ public class UCSBSubjectControllerTests extends ControllerTestCase {
                 .collegeCode("Test College Code")
                 .subjectCode("Test Subject Code")
                 .relatedDeptCode("Test related department code")
-                .inactive(true)
+                .inactive(false)
                 .id(0L)
                 .build();
         when(ucsbsubjectRepository.findById(eq(1L))).thenReturn(Optional.of(expectedUCSBSubject));
@@ -152,10 +152,10 @@ public class UCSBSubjectControllerTests extends ControllerTestCase {
     public void api_subject_put_subject() throws Exception {
         // arrange
 
-        UCSBSubject ucsbsubject1 = UCSBSubject.builder().id(1L).subjectCode("code 1").subjectTranslation("translation 1").deptCode("dept code 1").collegeCode("college code 1").relatedDeptCode("related dept code 1").inactive(true).build();
+        UCSBSubject ucsbsubject1 = UCSBSubject.builder().id(1L).subjectCode("code 1").subjectTranslation("translation 1").deptCode("dept code 1").collegeCode("college code 1").relatedDeptCode("related dept code 1").inactive(false).build();
 
-        UCSBSubject updatedUCSBSubject = UCSBSubject.builder().id(1L).subjectCode("code 2").subjectTranslation("translation 1").deptCode("dept code 1").collegeCode("college code 1").relatedDeptCode("related dept code 1").inactive(true).build();
-        UCSBSubject correctUCSBSubject = UCSBSubject.builder().id(1L).subjectCode("code 2").subjectTranslation("translation 1").deptCode("dept code 1").collegeCode("college code 1").relatedDeptCode("related dept code 1").inactive(true).build();
+        UCSBSubject updatedUCSBSubject = UCSBSubject.builder().id(1L).subjectCode("code 2").subjectTranslation("translation 1").deptCode("dept code 1").collegeCode("college code 1").relatedDeptCode("related dept code 1").inactive(false).build();
+        UCSBSubject correctUCSBSubject = UCSBSubject.builder().id(1L).subjectCode("code 2").subjectTranslation("translation 1").deptCode("dept code 1").collegeCode("college code 1").relatedDeptCode("related dept code 1").inactive(false).build();
 
         String requestBody = mapper.writeValueAsString(updatedUCSBSubject);
         String expectedReturn = mapper.writeValueAsString(correctUCSBSubject);
@@ -183,7 +183,7 @@ public class UCSBSubjectControllerTests extends ControllerTestCase {
     public void api_subject_put_that_does_not_exist() throws Exception {
         // arrange
 
-        UCSBSubject updatedUCSBSubject = UCSBSubject.builder().id(1L).subjectCode("code 1").subjectTranslation("translation 1").deptCode("dept code 1").collegeCode("college code 1").relatedDeptCode("related dept code 1").inactive(true).build();
+        UCSBSubject updatedUCSBSubject = UCSBSubject.builder().id(1L).subjectCode("code 1").subjectTranslation("translation 1").deptCode("dept code 1").collegeCode("college code 1").relatedDeptCode("related dept code 1").inactive(false).build();
 
         String requestBody = mapper.writeValueAsString(updatedUCSBSubject);
 

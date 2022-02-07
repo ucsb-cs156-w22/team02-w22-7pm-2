@@ -139,6 +139,4 @@ public class UCSBSubjectController extends ApiController{
             return ucsbsub_error;
         }
 
-
-
 }

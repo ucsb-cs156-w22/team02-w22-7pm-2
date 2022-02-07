@@ -12,6 +12,7 @@ import edu.ucsb.cs156.team02.services.CurrentUserService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.web.bind.annotation.PutMapping;
 
@@ -140,6 +141,23 @@ public class UCSBSubjectController extends ApiController{
             return ucsbsub_error;
         }
 
+    @ApiOperation(value = "Delete a UCSB Subject")
+    //@PreAuthorize("hasRole('ROLE_USER')")
+    @DeleteMapping("")
+    public ResponseEntity<String> deleteUCSBSubject(
+            @ApiParam("id") @RequestParam Long id) {
+        loggingService.logMethod();
 
+        UCSBSubjectOrError ucsbsub_error = new UCSBSubjectOrError(id);
+
+        ucsbsub_error = doesUCSBSubjectExist(ucsbsub_error);
+        if (ucsbsub_error.error != null) {
+            return ucsbsub_error.error;
+        }
+
+        ucsbsubjectRepository.deleteById(id);
+        return ResponseEntity.ok().body(String.format("UCSB Subject with id %d deleted", id));
+
+    }
 
 }

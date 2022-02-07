@@ -155,17 +155,17 @@ public class UCSBSubjectControllerTests extends ControllerTestCase {
                 .id(0L)
                 .build();
 
-        UCSBSubject updatedUCSBSubject = UCSBSubject.builder().subjectTranslation("translation 1").deptCode("dept code 1").collegeCode("college code 1").subjectCode("code 2").relatedDeptCode("related dept code 1").inactive(false).id(1L).build();
-        UCSBSubject correctUCSBSubject = UCSBSubject.builder().subjectTranslation("translation 1").deptCode("dept code 1").collegeCode("college code 1").subjectCode("code 2").relatedDeptCode("related dept code 1").inactive(false).id(1L).build();
+        UCSBSubject updatedUCSBSubject = UCSBSubject.builder().subjectTranslation("translation 1").deptCode("dept code 1").collegeCode("college code 1").subjectCode("code 2").relatedDeptCode("related dept code 1").inactive(false).id(77L).build();
+        UCSBSubject correctUCSBSubject = UCSBSubject.builder().subjectTranslation("translation 1").deptCode("dept code 1").collegeCode("college code 1").subjectCode("code 2").relatedDeptCode("related dept code 1").inactive(false).id(77L).build();
 
         String requestBody = mapper.writeValueAsString(updatedUCSBSubject);
         String expectedReturn = mapper.writeValueAsString(correctUCSBSubject);
 
-        when(ucsbsubjectRepository.findById(eq(67L))).thenReturn(Optional.of(ucsbsubject1));
+        when(ucsbsubjectRepository.findById(eq(77L))).thenReturn(Optional.of(ucsbsubject1));
 
         // act
         MvcResult response = mockMvc.perform(
-                put("/api/UCSBSubjects?id=67")
+                put("/api/UCSBSubjects?subjectTranslation=Test Subject Translation&deptCode=Test Department Code&collegeCode=Test College Code&subjectCode=Test Subject Code&relatedDeptCode=Test related department code&inactive=true&id=77L")
                         .contentType(MediaType.APPLICATION_JSON)
                         .characterEncoding("utf-8")
                         .content(requestBody)
@@ -173,7 +173,7 @@ public class UCSBSubjectControllerTests extends ControllerTestCase {
                 .andExpect(status().isOk()).andReturn();
 
         // assert
-        verify(ucsbsubjectRepository, times(1)).findById(67L);
+        verify(ucsbsubjectRepository, times(1)).findById(77L);
         verify(ucsbsubjectRepository, times(1)).save(correctUCSBSubject);
         String responseString = response.getResponse().getContentAsString();
         assertEquals(expectedReturn, responseString);

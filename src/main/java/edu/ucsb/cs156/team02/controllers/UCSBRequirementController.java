@@ -56,6 +56,7 @@ public class UCSBRequirementController extends ApiController {
     ObjectMapper mapper;
 
     @ApiOperation(value = "List all UCSBRequirements")
+    @GetMapping("/admin/all")
     public Iterable<UCSBRequirement> allUsersUCSBRequirements() {
         loggingService.logMethod();
         Iterable<UCSBRequirement> UCSBRequirements = UCSBRequirementRepository.findAll();

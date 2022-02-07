@@ -42,7 +42,7 @@ public class UCSBSubjectControllerTests extends ControllerTestCase {
 
 
         //test for /all endpoint
-
+    @WithMockUser(roles = { "ADMIN" })
     @Test
     public void api_all() throws Exception {
 
@@ -70,7 +70,7 @@ public class UCSBSubjectControllerTests extends ControllerTestCase {
 
 
         //tests for /post endpoint
-
+    @WithMockUser(roles = { "ADMIN" })
     @Test
     public void api_post() throws Exception {
         // arrange
@@ -101,7 +101,7 @@ public class UCSBSubjectControllerTests extends ControllerTestCase {
 
 
         //test for /get with id
-
+    @WithMockUser(roles = { "ADMIN" })
     @Test
     public void api_get_id_returns_a_subject_that_exists() throws Exception {
 
@@ -122,6 +122,7 @@ public class UCSBSubjectControllerTests extends ControllerTestCase {
     }
 
     //Test api /get UCSB Subject id that doesn't exist
+    @WithMockUser(roles = { "ADMIN" })
     @Test
     public void api_get_id_returns_a_subject_that_does_not_exist() throws Exception {
 
@@ -166,7 +167,7 @@ public class UCSBSubjectControllerTests extends ControllerTestCase {
 
         // act
         MvcResult response = mockMvc.perform(
-                put("/api/UCSBSubjects/admin?id=77")
+                put("/api/UCSBSubjects?id=77")
                         .contentType(MediaType.APPLICATION_JSON)
                         .characterEncoding("utf-8")
                         .content(requestBody)
@@ -202,7 +203,7 @@ public class UCSBSubjectControllerTests extends ControllerTestCase {
 
         // act
         MvcResult response = mockMvc.perform(
-                put("/api/UCSBSubjects/admin?id=77")
+                put("/api/UCSBSubjects?id=77")
                         .contentType(MediaType.APPLICATION_JSON)
                         .characterEncoding("utf-8")
                         .content(requestBody)

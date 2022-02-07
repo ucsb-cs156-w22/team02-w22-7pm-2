@@ -153,9 +153,9 @@ public class UCSBSubjectControllerTests extends ControllerTestCase {
                 .inactive(true)
                 .id(0L)
                 .build();
-                
-        UCSBSubject updatedUCSBSubject = UCSBSubject.builder().id(1L).subjectCode("code 2").subjectTranslation("translation 1").deptCode("dept code 1").collegeCode("college code 1").relatedDeptCode("related dept code 1").inactive(false).build();
-        UCSBSubject correctUCSBSubject = UCSBSubject.builder().id(1L).subjectCode("code 2").subjectTranslation("translation 1").deptCode("dept code 1").collegeCode("college code 1").relatedDeptCode("related dept code 1").inactive(false).build();
+
+        UCSBSubject updatedUCSBSubject = UCSBSubject.builder().subjectTranslation("translation 1").deptCode("dept code 1").collegeCode("college code 1").subjectCode("code 2").relatedDeptCode("related dept code 1").inactive(false).id(1L).build();
+        UCSBSubject correctUCSBSubject = UCSBSubject.builder().subjectTranslation("translation 1").deptCode("dept code 1").collegeCode("college code 1").subjectCode("code 2").relatedDeptCode("related dept code 1").inactive(false).id(1L).build();
 
         String requestBody = mapper.writeValueAsString(updatedUCSBSubject);
         String expectedReturn = mapper.writeValueAsString(correctUCSBSubject);

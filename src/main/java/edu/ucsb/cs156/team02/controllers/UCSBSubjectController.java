@@ -142,7 +142,7 @@ public class UCSBSubjectController extends ApiController{
         }
 
     @ApiOperation(value = "Delete a UCSB Subject")
-    //@PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("hasRole('ROLE_USER')")
     @DeleteMapping("")
     public ResponseEntity<String> deleteUCSBSubject(
             @ApiParam("id") @RequestParam Long id) {

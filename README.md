@@ -3,7 +3,6 @@
 [![codecov](https://codecov.io/gh/ucsb-cs156-w22/team02-w22-7pm-2/branch/main/graph/badge.svg?token=rZT26BG1Dj)](https://codecov.io/gh/ucsb-cs156-w22/team02-w22-7pm-2)
 
 Production: https://w22-7pm-2-team02.herokuapp.com/
-
 QA: https://w22-7pm-2-team02-qa.herokuapp.com/
 
 Storybook is here:
@@ -116,6 +115,7 @@ To access the swagger API endpoints, use:
     ```
 
 - On Heroku, without CLI:
+
   - Upper right of dashboard, select "More" then "Run Console"
 
     <img alt="Heroku Dashboard; More; Run Console" src="https://user-images.githubusercontent.com/1119017/150204550-a1027ab8-6ce7-4770-b566-a43928f5c3a0.png" width="300" />

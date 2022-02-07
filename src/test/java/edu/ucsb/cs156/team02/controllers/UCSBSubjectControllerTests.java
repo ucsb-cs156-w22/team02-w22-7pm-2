@@ -106,7 +106,15 @@ public class UCSBSubjectControllerTests extends ControllerTestCase {
     public void api_get_id_returns_a_subject_that_exists() throws Exception {
 
         // arrange
-        UCSBSubject expectedUCSBSubject = UCSBSubject.builder().id(1L).subjectCode("code 1").subjectTranslation("translation 1").deptCode("dept code 1").collegeCode("college code 1").relatedDeptCode("related dept code 1").inactive(true).build();
+        UCSBSubject expectedUCSBSubject = UCSBSubject.builder()
+                .subjectTranslation("Test Subject Translation")
+                .deptCode("Test Department Code")
+                .collegeCode("Test College Code")
+                .subjectCode("Test Subject Code")
+                .relatedDeptCode("Test related department code")
+                .inactive(true)
+                .id(0L)
+                .build();
         when(ucsbsubjectRepository.findById(eq(1L))).thenReturn(Optional.of(expectedUCSBSubject));
 
         // act

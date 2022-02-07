@@ -197,7 +197,7 @@ public class UCSBSubjectControllerTests extends ControllerTestCase {
 
 
         //test delete endpoint
-        @WithMockUser(roles = { "USER" })
+        @WithMockUser(roles = { "ADMIN" })
         @Test
         public void api_subject__delete_subject() throws Exception {
                 // arrange

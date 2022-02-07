@@ -12,7 +12,6 @@ import edu.ucsb.cs156.team02.services.CurrentUserService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.web.bind.annotation.PutMapping;
 
@@ -54,7 +53,7 @@ public class UCSBSubjectController extends ApiController{
     ObjectMapper mapper;
 
     @ApiOperation(value = "Get a list of UCSB subjects")
-    //@PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/all")
         public Iterable<UCSBSubject> UCSBSubjectInfo() {
             loggingService.logMethod();
@@ -64,7 +63,7 @@ public class UCSBSubjectController extends ApiController{
         }
 
     @ApiOperation(value = "Create a new UCSB subject")
-    //@PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/post")
     public UCSBSubject postUCSBSubject(
             @ApiParam("subject Translation") @RequestParam String subjectTranslation,
@@ -74,11 +73,8 @@ public class UCSBSubjectController extends ApiController{
             @ApiParam("related Dept Code") @RequestParam String relatedDeptCode,
             @ApiParam("inactive") @RequestParam Boolean inactive) {
         loggingService.logMethod();
-        //CurrentUser currentUser = getCurrentUser();
-        //log.info("currentUser={}", currentUser);
 
         UCSBSubject ucsbsubject = new UCSBSubject();
-        //ucsbsubject.setUser(currentUser.getUser());
         ucsbsubject.setSubjectTranslation(subjectTranslation);
         ucsbsubject.setDeptCode(deptCode);
         ucsbsubject.setCollegeCode(collegeCode);
@@ -90,7 +86,7 @@ public class UCSBSubjectController extends ApiController{
     }
 
     @ApiOperation(value = "Get a UCSB Subject with given id")
-    //@PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("")
     public ResponseEntity<String> getUCSBSubjectById(
         @ApiParam("id") @RequestParam Long id) throws JsonProcessingException {
@@ -108,12 +104,13 @@ public class UCSBSubjectController extends ApiController{
     }
 
     @ApiOperation(value = "Update a single UCSBSubject")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("")
     public ResponseEntity<String> putSubjectById(
             @ApiParam("id") @RequestParam Long id,
             @RequestBody @Valid UCSBSubject incomingUCSBSubject) throws JsonProcessingException {
         loggingService.logMethod();
-
+        
         UCSBSubjectOrError ucsbsub_error = new UCSBSubjectOrError(id);
 
         ucsbsub_error = doesUCSBSubjectExist(ucsbsub_error);
@@ -121,6 +118,7 @@ public class UCSBSubjectController extends ApiController{
             return ucsbsub_error.error;
         }
 
+        incomingUCSBSubject.setId(id);
         ucsbsubjectRepository.save(incomingUCSBSubject);
 
         String body = mapper.writeValueAsString(incomingUCSBSubject);
@@ -142,7 +140,7 @@ public class UCSBSubjectController extends ApiController{
         }
 
     @ApiOperation(value = "Delete a UCSB Subject")
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("")
     public ResponseEntity<String> deleteUCSBSubject(
             @ApiParam("id") @RequestParam Long id) {

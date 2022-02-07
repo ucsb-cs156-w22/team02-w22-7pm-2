@@ -104,12 +104,13 @@ public class UCSBSubjectController extends ApiController{
     }
 
     @ApiOperation(value = "Update a single UCSBSubject")
+    @PreAuthorize("hasRole('ROLE_USER')")
     @PutMapping("")
     public ResponseEntity<String> putSubjectById(
             @ApiParam("id") @RequestParam Long id,
             @RequestBody @Valid UCSBSubject incomingUCSBSubject) throws JsonProcessingException {
         loggingService.logMethod();
-
+        
         UCSBSubjectOrError ucsbsub_error = new UCSBSubjectOrError(id);
 
         ucsbsub_error = doesUCSBSubjectExist(ucsbsub_error);
@@ -117,6 +118,7 @@ public class UCSBSubjectController extends ApiController{
             return ucsbsub_error.error;
         }
 
+        incomingUCSBSubject.setId(id);
         ucsbsubjectRepository.save(incomingUCSBSubject);
 
         String body = mapper.writeValueAsString(incomingUCSBSubject);

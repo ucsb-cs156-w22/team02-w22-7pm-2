@@ -106,7 +106,7 @@ public class UCSBSubjectController extends ApiController{
         return ResponseEntity.ok().body(body);
     }
 
- /*   @ApiOperation(value = "Update a single UCSBSubject")
+    @ApiOperation(value = "Update a single UCSBSubject")
     @PutMapping("")
     public ResponseEntity<String> putSubjectById(
             @ApiParam("id") @RequestParam Long id,
@@ -125,7 +125,7 @@ public class UCSBSubjectController extends ApiController{
         String body = mapper.writeValueAsString(incomingUCSBSubject);
         return ResponseEntity.ok().body(body);
     }
-*/
+
         public UCSBSubjectOrError doesUCSBSubjectExist(UCSBSubjectOrError ucsbsub_error) {
 
             Optional<UCSBSubject> optionalUCSBSubject = ucsbsubjectRepository.findById(ucsbsub_error.id);

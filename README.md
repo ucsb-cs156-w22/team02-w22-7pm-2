@@ -5,7 +5,7 @@
 Production: https://w22-7pm-2-team02.herokuapp.com/
 QA: https://w22-7pm-2-team02-qa.herokuapp.com/
 
-Storybook is here:
+Storybook is here!
 
 - Production: <https://ucsb-cs156-w22.github.io/team02-w22-7pm-2-docs/>
 - QA: <https://ucsb-cs156-w22.github.io/team02-w22-7pm-2-docs-qa/>

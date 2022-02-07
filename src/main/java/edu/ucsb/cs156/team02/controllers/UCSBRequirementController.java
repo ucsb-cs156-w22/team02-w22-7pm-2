@@ -56,27 +56,13 @@ public class UCSBRequirementController extends ApiController {
     ObjectMapper mapper;
 
     @ApiOperation(value = "List all UCSBRequirements")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @GetMapping("/admin/all")
     public Iterable<UCSBRequirement> allUsersUCSBRequirements() {
         loggingService.logMethod();
         Iterable<UCSBRequirement> UCSBRequirements = UCSBRequirementRepository.findAll();
         return UCSBRequirements;
     }
 
-    @ApiOperation(value = "List this user's UCSBRequirements")
-    @PreAuthorize("hasRole('ROLE_USER')")
-    @GetMapping("/all")
-    public Iterable<UCSBRequirement> thisUsersUCSBRequirements() {
-        loggingService.logMethod();
-        CurrentUser currentUser = getCurrentUser();
-        Iterable<UCSBRequirement> UCSBRequirements = UCSBRequirementRepository
-                .findAllByUserId(currentUser.getUser().getId());
-        return UCSBRequirements;
-    }
-
-    @ApiOperation(value = "Get a single UCSBRequirement (if it belongs to current user)")
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @ApiOperation(value = "Get a single UCSBRequirement")
     @GetMapping("")
     public ResponseEntity<String> getUCSBRequirementById(
             @ApiParam("id") @RequestParam Long id) throws JsonProcessingException {
@@ -87,54 +73,35 @@ public class UCSBRequirementController extends ApiController {
         if (toe.error != null) {
             return toe.error;
         }
-        toe = doesUCSBRequirementBelongToCurrentUser(toe);
-        if (toe.error != null) {
-            return toe.error;
-        }
-        String body = mapper.writeValueAsString(toe.UCSBRequirement);
-        return ResponseEntity.ok().body(body);
-    }
-
-    @ApiOperation(value = "Get a single UCSBRequirement (no matter who it belongs to, admin only)")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @GetMapping("/admin")
-    public ResponseEntity<String> getUCSBRequirementById_admin(
-            @ApiParam("id") @RequestParam Long id) throws JsonProcessingException {
-        loggingService.logMethod();
-
-        UCSBRequirementOrError toe = new UCSBRequirementOrError(id);
-
-        toe = doesUCSBRequirementExist(toe);
-        if (toe.error != null) {
-            return toe.error;
-        }
-
         String body = mapper.writeValueAsString(toe.UCSBRequirement);
         return ResponseEntity.ok().body(body);
     }
 
     @ApiOperation(value = "Create a new UCSBRequirement")
-    @PreAuthorize("hasRole('ROLE_USER')")
     @PostMapping("/post")
     public UCSBRequirement postUCSBRequirement(
-            @ApiParam("title") @RequestParam String title,
-            @ApiParam("details") @RequestParam String details,
-            @ApiParam("done") @RequestParam Boolean done) {
+            @ApiParam("requirement code") @RequestParam String requirementCode,
+            @ApiParam("requirement translation") @RequestParam String requirementTranslation,
+            @ApiParam("college code") @RequestParam String collegeCode,
+            @ApiParam("object code") @RequestParam String objCode,
+            @ApiParam("course count") @RequestParam int courseCount,
+            @ApiParam("units") @RequestParam int units,
+            @ApiParam("inactive") @RequestParam boolean inactive) {
         loggingService.logMethod();
-        CurrentUser currentUser = getCurrentUser();
-        log.info("currentUser={}", currentUser);
 
         UCSBRequirement UCSBRequirement = new UCSBRequirement();
-        UCSBRequirement.setUser(currentUser.getUser());
-        UCSBRequirement.setTitle(title);
-        UCSBRequirement.setDetails(details);
-        UCSBRequirement.setDone(done);
+        UCSBRequirement.setRequirementCode(requirementCode);
+        UCSBRequirement.setRequirementTranslation(requirementTranslation);
+        UCSBRequirement.setCollegeCode(collegeCode);
+        UCSBRequirement.setObjCode(objCode);
+        UCSBRequirement.setCourseCount(courseCount);
+        UCSBRequirement.setUnits(units);
+        UCSBRequirement.setInactive(inactive);
         UCSBRequirement savedUCSBRequirement = UCSBRequirementRepository.save(UCSBRequirement);
         return savedUCSBRequirement;
     }
 
-    @ApiOperation(value = "Delete a UCSBRequirement owned by this user")
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @ApiOperation(value = "Delete a UCSBRequirement")
     @DeleteMapping("")
     public ResponseEntity<String> deleteUCSBRequirement(
             @ApiParam("id") @RequestParam Long id) {
@@ -147,72 +114,18 @@ public class UCSBRequirementController extends ApiController {
             return toe.error;
         }
 
-        toe = doesUCSBRequirementBelongToCurrentUser(toe);
-        if (toe.error != null) {
-            return toe.error;
-        }
         UCSBRequirementRepository.deleteById(id);
         return ResponseEntity.ok().body(String.format("UCSBRequirement with id %d deleted", id));
 
     }
 
-    @ApiOperation(value = "Delete another user's UCSBRequirement")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @DeleteMapping("/admin")
-    public ResponseEntity<String> deleteUCSBRequirement_Admin(
-            @ApiParam("id") @RequestParam Long id) {
-        loggingService.logMethod();
-
-        UCSBRequirementOrError toe = new UCSBRequirementOrError(id);
-
-        toe = doesUCSBRequirementExist(toe);
-        if (toe.error != null) {
-            return toe.error;
-        }
-
-        UCSBRequirementRepository.deleteById(id);
-
-        return ResponseEntity.ok().body(String.format("UCSBRequirement with id %d deleted", id));
-
-    }
-
-    @ApiOperation(value = "Update a single UCSBRequirement (if it belongs to current user)")
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @ApiOperation(value = "Update a single UCSBRequirement")
     @PutMapping("")
     public ResponseEntity<String> putUCSBRequirementById(
             @ApiParam("id") @RequestParam Long id,
             @RequestBody @Valid UCSBRequirement incomingUCSBRequirement) throws JsonProcessingException {
         loggingService.logMethod();
 
-        CurrentUser currentUser = getCurrentUser();
-        User user = currentUser.getUser();
-
-        UCSBRequirementOrError toe = new UCSBRequirementOrError(id);
-
-        toe = doesUCSBRequirementExist(toe);
-        if (toe.error != null) {
-            return toe.error;
-        }
-        toe = doesUCSBRequirementBelongToCurrentUser(toe);
-        if (toe.error != null) {
-            return toe.error;
-        }
-
-        incomingUCSBRequirement.setUser(user);
-        UCSBRequirementRepository.save(incomingUCSBRequirement);
-
-        String body = mapper.writeValueAsString(incomingUCSBRequirement);
-        return ResponseEntity.ok().body(body);
-    }
-
-    @ApiOperation(value = "Update a single UCSBRequirement (regardless of ownership, admin only, can't change ownership)")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @PutMapping("/admin")
-    public ResponseEntity<String> putUCSBRequirementById_admin(
-            @ApiParam("id") @RequestParam Long id,
-            @RequestBody @Valid UCSBRequirement incomingUCSBRequirement) throws JsonProcessingException {
-        loggingService.logMethod();
-
         UCSBRequirementOrError toe = new UCSBRequirementOrError(id);
 
         toe = doesUCSBRequirementExist(toe);
@@ -220,11 +133,6 @@ public class UCSBRequirementController extends ApiController {
             return toe.error;
         }
 
-        // Even the admin can't change the user; they can change other details
-        // but not that.
-
-        User previousUser = toe.UCSBRequirement.getUser();
-        incomingUCSBRequirement.setUser(previousUser);
         UCSBRequirementRepository.save(incomingUCSBRequirement);
 
         String body = mapper.writeValueAsString(incomingUCSBRequirement);
@@ -253,32 +161,6 @@ public class UCSBRequirementController extends ApiController {
                     .body(String.format("UCSBRequirement with id %d not found", toe.id));
         } else {
             toe.UCSBRequirement = optionalUCSBRequirement.get();
-        }
-        return toe;
-    }
-
-    /**
-     * Pre-conditions: toe.UCSBRequirement is non-null and refers to the
-     * UCSBRequirement with id toe.id,
-     * and toe.error is null
-     * 
-     * Post-condition: if UCSBRequirement belongs to current user, then error is
-     * still null.
-     * Otherwise error is a suitable
-     * return value.
-     */
-    public UCSBRequirementOrError doesUCSBRequirementBelongToCurrentUser(UCSBRequirementOrError toe) {
-        CurrentUser currentUser = getCurrentUser();
-        log.info("currentUser={}", currentUser);
-
-        Long currentUserId = currentUser.getUser().getId();
-        Long UCSBRequirementUserId = toe.UCSBRequirement.getUser().getId();
-        log.info("currentUserId={} UCSBRequirementUserId={}", currentUserId, UCSBRequirementUserId);
-
-        if (UCSBRequirementUserId != currentUserId) {
-            toe.error = ResponseEntity
-                    .badRequest()
-                    .body(String.format("UCSBRequirement with id %d not found", toe.id));
         }
         return toe;
     }

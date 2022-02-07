@@ -139,63 +139,7 @@ public class UCSBSubjectControllerTests extends ControllerTestCase {
         assertEquals("ucsb subject with id 7 not found", responseString);
     }
 
-    //Test api /put subject given id
-    @Test
-    public void api_subject_put_subject() throws Exception {
-        // arrange
-
-        UCSBSubject ucsbsubject1 = UCSBSubject.builder().id(1L).subjectCode("code 1").subjectTranslation("translation 1").deptCode("dept code 1").collegeCode("college code 1").relatedDeptCode("related dept code 1").inactive(true).build();
-
-        UCSBSubject updatedUCSBSubject = UCSBSubject.builder().id(1L).subjectCode("code 2").subjectTranslation("translation 1").deptCode("dept code 1").collegeCode("college code 1").relatedDeptCode("related dept code 1").inactive(true).build();
-        UCSBSubject correctUCSBSubject = UCSBSubject.builder().id(1L).subjectCode("code 2").subjectTranslation("translation 1").deptCode("dept code 1").collegeCode("college code 1").relatedDeptCode("related dept code 1").inactive(true).build();
-
-        String requestBody = mapper.writeValueAsString(updatedUCSBSubject);
-        String expectedReturn = mapper.writeValueAsString(correctUCSBSubject);
-
-        when(ucsbsubjectRepository.findById(eq(1L))).thenReturn(Optional.of(ucsbsubject1));
-
-        // act
-        MvcResult response = mockMvc.perform(
-                put("/api/UCSBSubjects?id=1")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .characterEncoding("utf-8")
-                        .content(requestBody)
-                        .with(csrf()))
-                .andExpect(status().isOk()).andReturn();
-
-        // assert
-        verify(ucsbsubjectRepository, times(1)).findById(1L);
-        verify(ucsbsubjectRepository, times(1)).save(correctUCSBSubject);
-        String responseString = response.getResponse().getContentAsString();
-        assertEquals(expectedReturn, responseString);
-    }
-
-    // Test api /put with Subject id that doesn't exist
-    @Test
-    public void api_subject_put_that_does_not_exist() throws Exception {
-        // arrange
-
-        UCSBSubject updatedUCSBSubject = UCSBSubject.builder().id(1L).subjectCode("code 1").subjectTranslation("translation 1").deptCode("dept code 1").collegeCode("college code 1").relatedDeptCode("related dept code 1").inactive(true).build();
-
-        String requestBody = mapper.writeValueAsString(updatedUCSBSubject);
-
-        when(ucsbsubjectRepository.findById(eq(1L))).thenReturn(Optional.empty());
-
-        // act
-        MvcResult response = mockMvc.perform(
-                put("/api/UCSBSubjects?id=1")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .characterEncoding("utf-8")
-                        .content(requestBody)
-                        .with(csrf()))
-                .andExpect(status().isBadRequest()).andReturn();
-
-        // assert
-        verify(ucsbsubjectRepository, times(1)).findById(1L);
-        String responseString = response.getResponse().getContentAsString();
-        assertEquals("ucsb subject with id 1 not found", responseString);
-    }
-
+    
 
 
 

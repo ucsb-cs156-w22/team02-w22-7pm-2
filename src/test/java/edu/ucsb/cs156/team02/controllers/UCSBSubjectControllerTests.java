@@ -136,7 +136,7 @@ public class UCSBSubjectControllerTests extends ControllerTestCase {
 
         verify(ucsbsubjectRepository, times(1)).findById(eq(7L));
         String responseString = response.getResponse().getContentAsString();
-        assertEquals("UCSBSubject with id 7 not found", responseString);
+        assertEquals("ucsb subject with id 7 not found", responseString);
     }
 
     //Test api /put subject given id
@@ -193,7 +193,7 @@ public class UCSBSubjectControllerTests extends ControllerTestCase {
         // assert
         verify(ucsbsubjectRepository, times(1)).findById(1L);
         String responseString = response.getResponse().getContentAsString();
-        assertEquals("UCSBSubject with id 1 not found", responseString);
+        assertEquals("ucsb subject with id 1 not found", responseString);
     }
 
 

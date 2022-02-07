@@ -259,7 +259,7 @@ public class UCSBSubjectControllerTests extends ControllerTestCase{
         when(ucsbSubjectRepository.findAll()).thenReturn(expectedUCSBSubject);
 
         // act
-        MvcResult response = mockMvc.perform(get("/api/UCSBSubject/all"))
+        MvcResult response = mockMvc.perform(get("/api/UCSBSubjects/all"))
                 .andExpect(status().isOk()).andReturn();
 
         // assert
@@ -279,7 +279,7 @@ public class UCSBSubjectControllerTests extends ControllerTestCase{
         when(ucsbSubjectRepository.findAll()).thenReturn(expectedUCSBSubject);
 
         // act
-        MvcResult response = mockMvc.perform(get("/api/UCSBSubject/all"))
+        MvcResult response = mockMvc.perform(get("/api/UCSBSubjects/all"))
                 .andExpect(status().isOk()).andReturn();
 
         // assert
@@ -299,7 +299,7 @@ public class UCSBSubjectControllerTests extends ControllerTestCase{
 
         // act
         MvcResult response = mockMvc.perform(
-                post("/api/UCSBSubject/post?id=1&subjectCode=code 1&subjectTranslation=translation 1&deptCode=dept code 1&collegeCode=college code 1&relatedDeptCode=related dept code 1&inactive=true")
+                post("/api/UCSBSubjects/post?id=1&subjectCode=code 1&subjectTranslation=translation 1&deptCode=dept code 1&collegeCode=college code 1&relatedDeptCode=related dept code 1&inactive=true")
                         .with(csrf()))
                 .andExpect(status().isOk()).andReturn();
 
@@ -320,7 +320,7 @@ public class UCSBSubjectControllerTests extends ControllerTestCase{
         when(ucsbSubjectRepository.findById(eq(1L))).thenReturn(Optional.of(expectedUCSBSubject));
 
         // act
-        MvcResult response = mockMvc.perform(get("/api/UCSBSubject?id=1"))
+        MvcResult response = mockMvc.perform(get("/api/UCSBSubjects?id=1"))
                 .andExpect(status().isOk()).andReturn();
 
         // assert
@@ -339,7 +339,7 @@ public class UCSBSubjectControllerTests extends ControllerTestCase{
         when(ucsbSubjectRepository.findById(eq(7L))).thenReturn(Optional.empty());
 
         // act
-        MvcResult response = mockMvc.perform(get("/api/UCSBSubject?id=7"))
+        MvcResult response = mockMvc.perform(get("/api/UCSBSubjects?id=7"))
                 .andExpect(status().isBadRequest()).andReturn();
 
         // assert
@@ -366,7 +366,7 @@ public class UCSBSubjectControllerTests extends ControllerTestCase{
 
         // act
         MvcResult response = mockMvc.perform(
-                put("/api/UCSBSubject?id=1")
+                put("/api/UCSBSubjects?id=1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .characterEncoding("utf-8")
                         .content(requestBody)
@@ -393,7 +393,7 @@ public class UCSBSubjectControllerTests extends ControllerTestCase{
 
         // act
         MvcResult response = mockMvc.perform(
-                put("/api/UCSBSubject?id=1")
+                put("/api/UCSBSubjects?id=1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .characterEncoding("utf-8")
                         .content(requestBody)

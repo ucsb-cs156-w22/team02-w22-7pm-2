@@ -73,11 +73,8 @@ public class UCSBSubjectController extends ApiController{
             @ApiParam("related Dept Code") @RequestParam String relatedDeptCode,
             @ApiParam("inactive") @RequestParam Boolean inactive) {
         loggingService.logMethod();
-        //CurrentUser currentUser = getCurrentUser();
-        //log.info("currentUser={}", currentUser);
 
         UCSBSubject ucsbsubject = new UCSBSubject();
-        //ucsbsubject.setUser(currentUser.getUser());
         ucsbsubject.setSubjectTranslation(subjectTranslation);
         ucsbsubject.setDeptCode(deptCode);
         ucsbsubject.setCollegeCode(collegeCode);

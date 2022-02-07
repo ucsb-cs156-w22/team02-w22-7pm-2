@@ -55,7 +55,7 @@ public class UCSBSubjectController extends ApiController{
     @ApiOperation(value = "Get a list of UCSB subjects")
     //@PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/all")
-        public Iterable<UCSBSubject> thisUsersUCSBSubjects() {
+        public Iterable<UCSBSubject> UCSBSubjectInfo() {
             loggingService.logMethod();
             //UCSBSubject ucsbsub = getUCSBSubject();
             Iterable<UCSBSubject> subjects = ucsbsubjectRepository.findAll();
@@ -89,9 +89,9 @@ public class UCSBSubjectController extends ApiController{
     }
 
     @ApiOperation(value = "Update a UCSB subject (if it exists)")
-    @PreAuthorize("hasRole('ROLE_USER')")
+    //@PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("")
-    public ResponseEntity<String> putUCSBSubjectById(
+    public ResponseEntity<String> getUCSBSubjectById(
         @ApiParam("id") @RequestParam Long id) throws JsonProcessingException {
         loggingService.logMethod();
 

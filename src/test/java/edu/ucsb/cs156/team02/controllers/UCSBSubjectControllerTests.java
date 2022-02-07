@@ -139,6 +139,7 @@ public class UCSBSubjectControllerTests extends ControllerTestCase {
         assertEquals("ucsb subject with id 7 not found", responseString);
     }
 
+
     //Test api /put subject given id
     @Test
     public void api_subject_put_subject() throws Exception {

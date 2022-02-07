@@ -40,7 +40,7 @@ public class UCSBSubjectControllerTests extends ControllerTestCase {
     @MockBean
     UserRepository userRepository;
 
-/*
+
         //test for /all endpoint
 
     @Test
@@ -138,7 +138,7 @@ public class UCSBSubjectControllerTests extends ControllerTestCase {
         String responseString = response.getResponse().getContentAsString();
         assertEquals("ucsb subject with id 7 not found", responseString);
     }
-*/
+
 
     //Test api /put subject given id
     @WithMockUser(roles = { "ADMIN" })

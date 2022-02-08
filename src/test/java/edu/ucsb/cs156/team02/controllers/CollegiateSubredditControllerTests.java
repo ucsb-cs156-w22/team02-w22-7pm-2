@@ -220,6 +220,7 @@ public class CollegiateSubredditControllerTests extends ControllerTestCase{
                 .andExpect(status().isBadRequest()).andReturn();
 
         // assert
+		
         verify(collegiateSubredditRepository, times(1)).findById(67L);
         String responseString = response.getResponse().getContentAsString();
         assertEquals("CollegiateSubreddit with id 67 not found", responseString);

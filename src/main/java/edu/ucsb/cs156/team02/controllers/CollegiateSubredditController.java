@@ -153,4 +153,5 @@ public class CollegiateSubredditController extends ApiController {
 		}
 		return cse;
 	}
+	
 }

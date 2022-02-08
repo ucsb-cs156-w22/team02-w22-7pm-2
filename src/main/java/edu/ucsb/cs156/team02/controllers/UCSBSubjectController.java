@@ -104,7 +104,7 @@ public class UCSBSubjectController extends ApiController{
         String body = mapper.writeValueAsString(ucsbsub_error.sub);
         return ResponseEntity.ok().body(body);
     }
-
+/*
     @ApiOperation(value = "Update a single UCSBSubject")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("")
@@ -125,7 +125,7 @@ public class UCSBSubjectController extends ApiController{
 
         String body = mapper.writeValueAsString(incomingUCSBSubject);
         return ResponseEntity.ok().body(body);
-    }
+    }*/
 
         public UCSBSubjectOrError doesUCSBSubjectExist(UCSBSubjectOrError ucsbsub_error) {
 

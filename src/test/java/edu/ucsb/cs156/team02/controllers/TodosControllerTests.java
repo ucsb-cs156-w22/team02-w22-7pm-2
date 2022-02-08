@@ -38,7 +38,7 @@ public class TodosControllerTests extends ControllerTestCase {
 
     @MockBean
     UserRepository userRepository;
-/*
+
     // Authorization tests for /api/todos/admin/all
 
     @Test
@@ -489,7 +489,7 @@ public class TodosControllerTests extends ControllerTestCase {
         String responseString = response.getResponse().getContentAsString();
         assertEquals("todo with id 31 not found", responseString);
     }
-*/
+
 
     @WithMockUser(roles = { "ADMIN" })
     @Test

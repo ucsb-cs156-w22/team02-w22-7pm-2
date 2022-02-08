@@ -216,7 +216,6 @@ public class UCSBSubjectControllerTests extends ControllerTestCase {
         assertEquals("ucsb subject with id 77 not found", responseString);
     }
 
-
         //test delete endpoint
         @WithMockUser(roles = { "ADMIN" })
         @Test
@@ -247,6 +246,7 @@ public class UCSBSubjectControllerTests extends ControllerTestCase {
                 String responseString = response.getResponse().getContentAsString();
                 assertEquals("ucsb subject with id 15 deleted", responseString);
         }
+
 
 
 

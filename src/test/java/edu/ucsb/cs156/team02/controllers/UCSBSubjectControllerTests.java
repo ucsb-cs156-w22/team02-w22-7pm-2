@@ -141,7 +141,7 @@ public class UCSBSubjectControllerTests extends ControllerTestCase {
     }
 
 
-    //Test api /put subject given id
+   //Test api /put subject given id
     @WithMockUser(roles = { "ADMIN" })
     @Test
     public void api_subject_put_subject() throws Exception {
@@ -173,7 +173,7 @@ public class UCSBSubjectControllerTests extends ControllerTestCase {
                         .content(requestBody)
                         .with(csrf()))
                 .andExpect(status().isOk()).andReturn();
- 
+
         // assert
         verify(ucsbsubjectRepository, times(1)).findById(77L);
         verify(ucsbsubjectRepository, times(1)).save(correctUCSBSubject);

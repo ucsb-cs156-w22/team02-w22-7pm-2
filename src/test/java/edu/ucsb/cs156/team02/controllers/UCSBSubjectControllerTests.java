@@ -141,6 +141,7 @@ public class UCSBSubjectControllerTests extends ControllerTestCase {
     }
 
 
+
     //Test api /put subject given id
     @WithMockUser(roles = { "ADMIN" })
     @Test
@@ -173,7 +174,7 @@ public class UCSBSubjectControllerTests extends ControllerTestCase {
                         .content(requestBody)
                         .with(csrf()))
                 .andExpect(status().isOk()).andReturn();
- 
+
         // assert
         verify(ucsbsubjectRepository, times(1)).findById(77L);
         verify(ucsbsubjectRepository, times(1)).save(correctUCSBSubject);
@@ -215,6 +216,7 @@ public class UCSBSubjectControllerTests extends ControllerTestCase {
         String responseString = response.getResponse().getContentAsString();
         assertEquals("ucsb subject with id 77 not found", responseString);
     }
+
 
 
 

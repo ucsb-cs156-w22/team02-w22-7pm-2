@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.DeleteMapping; 
+import org.springframework.web.bind.annotation.DeleteMapping;
 
 
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -89,6 +89,7 @@ public class UCSBSubjectController extends ApiController{
 
     @ApiOperation(value = "Get a UCSB Subject with given id")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
+
     @GetMapping("")
     public ResponseEntity<String> getUCSBSubjectById(
         @ApiParam("id") @RequestParam Long id) throws JsonProcessingException {
@@ -104,7 +105,7 @@ public class UCSBSubjectController extends ApiController{
         String body = mapper.writeValueAsString(ucsbsub_error.sub);
         return ResponseEntity.ok().body(body);
     }
-/*
+
     @ApiOperation(value = "Update a single UCSBSubject")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("")
@@ -125,7 +126,7 @@ public class UCSBSubjectController extends ApiController{
 
         String body = mapper.writeValueAsString(incomingUCSBSubject);
         return ResponseEntity.ok().body(body);
-    }*/
+    }
 
         public UCSBSubjectOrError doesUCSBSubjectExist(UCSBSubjectOrError ucsbsub_error) {
 
@@ -161,3 +162,4 @@ public class UCSBSubjectController extends ApiController{
     }
 
 }
+

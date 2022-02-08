@@ -33,6 +33,16 @@ import java.util.Optional;
 @RequestMapping("/api/collegiateSubreddits")
 public class CollegiateSubredditController extends ApiController {
 
+	public class CollegiateSubredditOrError {
+        Long id;
+        CollegiateSubreddit reddit;
+        ResponseEntity<String> error;
+
+        public CollegiateSubredditOrError(Long id) {
+            this.id = id;
+        }
+    }
+
     @Autowired
     CollegiateSubredditRepository collegiateSubredditRepository;
 
@@ -47,6 +57,12 @@ public class CollegiateSubredditController extends ApiController {
         Iterable<CollegiateSubreddit> reddits = collegiateSubredditRepository.findAll();
         return reddits;
     }
+	public Iterable<CollegiateSubreddit> CollegiateSubredditInfo()
+	{
+		 loggingService.logMethod();
+		 Iterable<CollegiateSubreddit> reddits = collegiateSubredditRepository.findAll();
+		 return reddits;
+	}
 
     @ApiOperation(value = "Create a new Collegiate subreddit")
     @PreAuthorize("hasRole('ROLE_USER')")
@@ -65,4 +81,76 @@ public class CollegiateSubredditController extends ApiController {
         return savedReddit;
     }
 
+	@ApiOperation(value = "Get Collegiate Subreddit by ID")
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @GetMapping("")
+    public ResponseEntity<String> getCollegiateSubredditById(
+            @ApiParam("id") @RequestParam Long id) throws JsonProcessingException {
+        loggingService.logMethod();
+        CollegiateSubredditOrError cse = new CollegiateSubredditOrError(id);
+
+        cse = doesCollegiateSubredditOrErrorExist(cse);
+        if (cse.error != null) {
+            return cse.error;
+        }
+		
+        String body = mapper.writeValueAsString(cse.reddit);
+        return ResponseEntity.ok().body(body);
+    }
+
+	@ApiOperation(value = "Update Collegiate Subreddit by ID)")
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @PutMapping("")
+    public ResponseEntity<String> putCollegiateSubredditById(
+            @ApiParam("id") @RequestParam Long id,
+            @RequestBody @Valid CollegiateSubreddit incomingCollegiateSubreddit) throws JsonProcessingException {
+        loggingService.logMethod();
+
+        CollegiateSubredditOrError cse = new CollegiateSubredditOrError(id);
+
+        cse = doesCollegiateSubredditOrErrorExist(cse);
+        if (cse.error != null) {
+            return cse.error;
+        }
+      
+
+        incomingCollegiateSubreddit.setId(id);
+        collegiateSubredditRepository.save(incomingCollegiateSubreddit);
+
+        String body = mapper.writeValueAsString(incomingCollegiateSubreddit);
+        return ResponseEntity.ok().body(body);
+    }
+
+	@ApiOperation(value = "Delete a Collegiate Subreddit by ID")
+	@PreAuthorize("hasRole('ROLE_USER')")
+	@DeleteMapping("")
+	public ResponseEntity<String> deleteCollegiateSubredditbyID(
+		@ApiParam("id") @RequestParam Long id) {
+	loggingService.logMethod();
+
+	CollegiateSubredditOrError cse = new CollegiateSubredditOrError(id);
+
+	cse = doesCollegiateSubredditOrErrorExist(cse);
+	if (cse.error != null) {
+		return cse.error;
+	}
+
+	collegiateSubredditRepository.deleteById(id);
+
+	return ResponseEntity.ok().body(String.format("record ", id ," deleted"));
+
+}
+
+	public CollegiateSubredditOrError doesCollegiateSubredditOrErrorExist (CollegiateSubredditOrError cse)
+	{
+		Optional<CollegiateSubreddit> optionalCollegiateSubreddit = collegiateSubredditRepository.findById(cse.id);
+
+		if(optionalCollegiateSubreddit.isEmpty())
+		{
+			cse.error = ResponseEntity
+					.badRequest()
+					.body(String.format("id ", cse.id, "not found"));
+		}
+		return cse;
+	}
 }

@@ -31,12 +31,21 @@ import java.lang.Boolean;
 import java.util.Optional;
 
 
-
 @Api(description="UCSB Subject Information")
 @RequestMapping("/api/UCSBSubjects")
 @RestController
 @Slf4j
 public class UCSBSubjectController extends ApiController{
+    public class UCSBSubjectOrError {
+        Long id;
+        UCSBSubject sub;
+        ResponseEntity<String> error;
+
+        public UCSBSubjectOrError(Long id) {
+            this.id = id;
+        }
+    }
+
     @Autowired
     UCSBSubjectRepository ucsbsubjectRepository;
 
@@ -46,11 +55,12 @@ public class UCSBSubjectController extends ApiController{
     @ApiOperation(value = "Get a list of UCSB subjects")
     //@PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/all")
-        public Iterable<UCSBSubject> allUCSBSubjects() {
-        //loggingService.logMethod();
-        Iterable<UCSBSubject> subjects = ucsbsubjectRepository.findAll();
-        return subjects;
-    }
+        public Iterable<UCSBSubject> UCSBSubjectInfo() {
+            loggingService.logMethod();
+            //UCSBSubject ucsbsub = getUCSBSubject();
+            Iterable<UCSBSubject> subjects = ucsbsubjectRepository.findAll();
+            return subjects;
+        }
 
     @ApiOperation(value = "Create a new UCSB subject")
     //@PreAuthorize("hasRole('ROLE_USER')")
@@ -63,11 +73,8 @@ public class UCSBSubjectController extends ApiController{
             @ApiParam("related Dept Code") @RequestParam String relatedDeptCode,
             @ApiParam("inactive") @RequestParam Boolean inactive) {
         loggingService.logMethod();
-        //CurrentUser currentUser = getCurrentUser();
-        //log.info("currentUser={}", currentUser);
 
         UCSBSubject ucsbsubject = new UCSBSubject();
-        //ucsbsubject.setUser(currentUser.getUser());
         ucsbsubject.setSubjectTranslation(subjectTranslation);
         ucsbsubject.setDeptCode(deptCode);
         ucsbsubject.setCollegeCode(collegeCode);
@@ -77,4 +84,59 @@ public class UCSBSubjectController extends ApiController{
         UCSBSubject savedUCSBSubject = ucsbsubjectRepository.save(ucsbsubject);
         return savedUCSBSubject;
     }
+
+    @ApiOperation(value = "Get a UCSB Subject with given id")
+    //@PreAuthorize("hasRole('ROLE_USER')")
+    @GetMapping("")
+    public ResponseEntity<String> getUCSBSubjectById(
+        @ApiParam("id") @RequestParam Long id) throws JsonProcessingException {
+        loggingService.logMethod();
+
+        UCSBSubjectOrError ucsbsub_error = new UCSBSubjectOrError(id);
+
+        ucsbsub_error = doesUCSBSubjectExist(ucsbsub_error);
+        if (ucsbsub_error.error != null) {
+            return ucsbsub_error.error;
+        }
+
+        String body = mapper.writeValueAsString(ucsbsub_error.sub);
+        return ResponseEntity.ok().body(body);
+    }
+/*
+    @ApiOperation(value = "Update a single UCSBSubject")
+    @PutMapping("")
+    public ResponseEntity<String> putSubjectById(
+            @ApiParam("id") @RequestParam Long id,
+            @RequestBody @Valid UCSBSubject incomingUCSBSubject) throws JsonProcessingException {
+        loggingService.logMethod();
+
+        UCSBSubjectOrError ucsbsub_error = new UCSBSubjectOrError(id);
+
+        ucsbsub_error = doesUCSBSubjectExist(ucsbsub_error);
+        if (ucsbsub_error.error != null) {
+            return ucsbsub_error.error;
+        }
+
+        ucsbsubjectRepository.save(incomingUCSBSubject);
+
+        String body = mapper.writeValueAsString(incomingUCSBSubject);
+        return ResponseEntity.ok().body(body);
+    }*/
+
+        public UCSBSubjectOrError doesUCSBSubjectExist(UCSBSubjectOrError ucsbsub_error) {
+
+            Optional<UCSBSubject> optionalUCSBSubject = ucsbsubjectRepository.findById(ucsbsub_error.id);
+
+            if (optionalUCSBSubject.isEmpty()) {
+                ucsbsub_error.error = ResponseEntity
+                        .badRequest()
+                        .body(String.format("ucsb subject with id %d not found", ucsbsub_error.id));
+            } else {
+                ucsbsub_error.sub = optionalUCSBSubject.get();
+            }
+            return ucsbsub_error;
+        }
+
+
+
 }

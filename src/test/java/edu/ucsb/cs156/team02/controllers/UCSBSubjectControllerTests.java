@@ -173,7 +173,7 @@ public class UCSBSubjectControllerTests extends ControllerTestCase {
                         .content(requestBody)
                         .with(csrf()))
                 .andExpect(status().isOk()).andReturn();
-
+ 
         // assert
         verify(ucsbsubjectRepository, times(1)).findById(77L);
         verify(ucsbsubjectRepository, times(1)).save(correctUCSBSubject);

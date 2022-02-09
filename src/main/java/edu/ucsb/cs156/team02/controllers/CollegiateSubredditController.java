@@ -57,12 +57,6 @@ public class CollegiateSubredditController extends ApiController {
         Iterable<CollegiateSubreddit> reddits = collegiateSubredditRepository.findAll();
         return reddits;
     }
-	public Iterable<CollegiateSubreddit> CollegiateSubredditInfo()
-	{
-		 loggingService.logMethod();
-		 Iterable<CollegiateSubreddit> reddits = collegiateSubredditRepository.findAll();
-		 return reddits;
-	}
 
     @ApiOperation(value = "Create a new Collegiate subreddit")
     @PreAuthorize("hasRole('ROLE_USER')")

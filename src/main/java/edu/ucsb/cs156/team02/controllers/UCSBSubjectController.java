@@ -162,4 +162,3 @@ public class UCSBSubjectController extends ApiController{
     }
 
 }
-

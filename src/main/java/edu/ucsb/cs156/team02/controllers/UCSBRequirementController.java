@@ -55,7 +55,8 @@ public class UCSBRequirementController extends ApiController {
     @Autowired
     ObjectMapper mapper;
 
-    @ApiOperation(value = "List all UCSBRequirements")
+    @ApiOperation(value = "List all UCSB requirements")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/admin/all")
     public Iterable<UCSBRequirement> allUsersUCSBRequirements() {
         loggingService.logMethod();
@@ -63,7 +64,8 @@ public class UCSBRequirementController extends ApiController {
         return UCSBRequirements;
     }
 
-    @ApiOperation(value = "Get a single UCSBRequirement")
+    @ApiOperation(value = "Get a single UCSB requirement")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("")
     public ResponseEntity<String> getUCSBRequirementById(
             @ApiParam("id") @RequestParam Long id) throws JsonProcessingException {
@@ -78,7 +80,8 @@ public class UCSBRequirementController extends ApiController {
         return ResponseEntity.ok().body(body);
     }
 
-    @ApiOperation(value = "Create a new UCSBRequirement")
+    @ApiOperation(value = "Create a new UCSB requirement")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/post")
     public UCSBRequirement postUCSBRequirement(
             @ApiParam("requirement code") @RequestParam String requirementCode,
@@ -102,7 +105,8 @@ public class UCSBRequirementController extends ApiController {
         return savedUCSBRequirement;
     }
 
-    @ApiOperation(value = "Delete a UCSBRequirement")
+    @ApiOperation(value = "Delete a UCSB requirement")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("")
     public ResponseEntity<String> deleteUCSBRequirement(
             @ApiParam("id") @RequestParam Long id) {
@@ -120,7 +124,8 @@ public class UCSBRequirementController extends ApiController {
 
     }
 
-    @ApiOperation(value = "Update a single UCSBRequirement")
+    @ApiOperation(value = "Update a single UCSB requirement")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("")
     public ResponseEntity<String> putUCSBRequirementById(
             @ApiParam("id") @RequestParam Long id,

@@ -1,9 +1,7 @@
 package edu.ucsb.cs156.team02.controllers;
 
-import edu.ucsb.cs156.team02.repositories.UserRepository;
 import edu.ucsb.cs156.team02.testconfig.TestConfig;
 import edu.ucsb.cs156.team02.ControllerTestCase;
-import edu.ucsb.cs156.team02.entities.User;
 import edu.ucsb.cs156.team02.entities.UCSBRequirement;
 import edu.ucsb.cs156.team02.repositories.UCSBRequirementRepository;
 import edu.ucsb.cs156.team02.controllers.UCSBRequirementController;
@@ -36,8 +34,6 @@ public class UCSBRequirementControllerTests extends ControllerTestCase {
 
         @MockBean
         UCSBRequirementRepository UCSBrequirementRepository;
-        @MockBean
-        UserRepository userRepository;
 
         // Authorization tests for /api/UCSBRequirement/admin/all
         @WithMockUser(roles = { "ADMIN" })
@@ -200,19 +196,19 @@ public class UCSBRequirementControllerTests extends ControllerTestCase {
                 UCSBRequirement UCSBRequirement1 = UCSBRequirement.builder().id(1L).requirementCode("A1")
                                 .requirementTranslation("English Reading & Composition").collegeCode("ENGR")
                                 .objCode("BA").courseCount(1).units(4).inactive(false).build();
-                when(UCSBrequirementRepository.findById(eq(15L))).thenReturn(Optional.of(UCSBRequirement1));
+                when(UCSBrequirementRepository.findById(eq(1L))).thenReturn(Optional.of(UCSBRequirement1));
 
                 // act
                 MvcResult response = mockMvc.perform(
-                                delete("/api/UCSBRequirement?id=15")
+                                delete("/api/UCSBRequirement?id=1")
                                                 .with(csrf()))
                                 .andExpect(status().isOk()).andReturn();
 
                 // assert
-                verify(UCSBrequirementRepository, times(1)).findById(15L);
-                verify(UCSBrequirementRepository, times(1)).deleteById(15L);
+                verify(UCSBrequirementRepository, times(1)).findById(1L);
+                verify(UCSBrequirementRepository, times(1)).deleteById(1L);
                 String responseString = response.getResponse().getContentAsString();
-                assertEquals("UCSBRequirement with id 15 deleted", responseString);
+                assertEquals("UCSBRequirement with id 1 deleted", responseString);
         }
 
         @WithMockUser(roles = { "ADMIN" })
@@ -223,16 +219,16 @@ public class UCSBRequirementControllerTests extends ControllerTestCase {
                 UCSBRequirement UCSBRequirement1 = UCSBRequirement.builder().id(1L).requirementCode("A1")
                                 .requirementTranslation("English Reading & Composition").collegeCode("ENGR")
                                 .objCode("BA").courseCount(1).units(4).inactive(false).build();
-                when(UCSBrequirementRepository.findById(eq(15L))).thenReturn(Optional.of(UCSBRequirement1));
+                when(UCSBrequirementRepository.findById(eq(1L))).thenReturn(Optional.of(UCSBRequirement1));
 
                 // act
                 MvcResult response = mockMvc.perform(
-                                delete("/api/UCSBRequirement?id=15")
+                                delete("/api/UCSBRequirement?id=1")
                                                 .with(csrf()))
                                 .andExpect(status().isBadRequest()).andReturn();
 
                 // assert
-                verify(UCSBrequirementRepository, times(1)).findById(15L);
+                verify(UCSBrequirementRepository, times(1)).findById(1L);
                 String responseString = response.getResponse().getContentAsString();
                 assertEquals("UCSBRequirement with id 15 not found", responseString);
         }

@@ -3,10 +3,10 @@ package edu.ucsb.cs156.team02.entities;
 import javax.persistence.*;
 import lombok.*;
 
-@Data //idk if i need to add this line
-@AllArgsConstructor //idk if i need to add this line
-@NoArgsConstructor //idk if i need to add this line
-@Builder //idk if i need to add this line
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 
 @Entity(name = "ucsb_requirements")
 public class UCSBRequirement {

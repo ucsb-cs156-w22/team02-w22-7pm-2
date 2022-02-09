@@ -79,7 +79,7 @@ public class UCSBRequirementControllerTests extends ControllerTestCase {
 
                 verify(UCSBrequirementRepository, times(1)).findById(eq(7L));
                 String responseString = response.getResponse().getContentAsString();
-                assertEquals("UCSBRequirement with id 7 not found", responseString);
+                assertEquals("UCSB requirement with id 7 not found", responseString);
         }
 
         @WithMockUser(roles = { "ADMIN" })
@@ -160,7 +160,7 @@ public class UCSBRequirementControllerTests extends ControllerTestCase {
                 verify(UCSBrequirementRepository, times(1)).findById(1L);
                 verify(UCSBrequirementRepository, times(1)).deleteById(1L);
                 String responseString = response.getResponse().getContentAsString();
-                assertEquals("UCSBRequirement with id 1 deleted", responseString);
+                assertEquals("UCSB requirement with id 1 deleted", responseString);
         }
 
         @WithMockUser(roles = { "ADMIN" })
@@ -251,6 +251,6 @@ public class UCSBRequirementControllerTests extends ControllerTestCase {
                 // assert
                 verify(UCSBrequirementRepository, times(1)).findById(1L);
                 String responseString = response.getResponse().getContentAsString();
-                assertEquals("UCSBRequirement with id 1 not found", responseString);
+                assertEquals("UCSB requirement with id 1 not found", responseString);
         }
 }

@@ -33,7 +33,7 @@ import static org.mockito.Mockito.when;
 @Import(TestConfig.class)
 public class TodosControllerTests extends ControllerTestCase {
 
-    @MockBean
+    @MockBean 
     TodoRepository todoRepository;
 
     @MockBean

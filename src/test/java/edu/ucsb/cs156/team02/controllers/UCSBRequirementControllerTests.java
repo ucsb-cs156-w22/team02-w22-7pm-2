@@ -5,6 +5,8 @@ import edu.ucsb.cs156.team02.ControllerTestCase;
 import edu.ucsb.cs156.team02.entities.UCSBRequirement;
 import edu.ucsb.cs156.team02.repositories.UCSBRequirementRepository;
 import edu.ucsb.cs156.team02.controllers.UCSBRequirementController;
+import edu.ucsb.cs156.team02.entities.User;
+import edu.ucsb.cs156.team02.repositories.UserRepository;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -34,58 +36,8 @@ public class UCSBRequirementControllerTests extends ControllerTestCase {
 
         @MockBean
         UCSBRequirementRepository UCSBrequirementRepository;
-
-        // Authorization tests for /api/UCSBRequirement/admin/all
-        @WithMockUser(roles = { "ADMIN" })
-        @Test
-        public void api_UCSBRequirement_admin_all__logged_out__returns_403() throws Exception {
-                mockMvc.perform(get("/api/UCSBRequirement/admin/all"))
-                                .andExpect(status().is(403));
-        }
-
-        @WithMockUser(roles = { "USER" })
-        @Test
-        public void api_UCSBRequirement_admin_all__user_logged_in__returns_403() throws Exception {
-                mockMvc.perform(get("/api/UCSBRequirement/admin/all"))
-                                .andExpect(status().is(403));
-        }
-
-        @WithMockUser(roles = { "USER" })
-        @Test
-        public void api_UCSBRequirement_admin__user_logged_in__returns_403() throws Exception {
-                mockMvc.perform(get("/api/UCSBRequirement/admin?id=7"))
-                                .andExpect(status().is(403));
-        }
-
-        @WithMockUser(roles = { "ADMIN" })
-        @Test
-        public void api_UCSBRequirement_admin_all__admin_logged_in__returns_200() throws Exception {
-                mockMvc.perform(get("/api/UCSBRequirement/admin/all"))
-                                .andExpect(status().isOk());
-        }
-
-        // Authorization tests for /api/UCSBRequirement/all
-
-        @Test
-        public void api_UCSBRequirement_all__logged_out__returns_403() throws Exception {
-                mockMvc.perform(get("/api/UCSBRequirement/all"))
-                                .andExpect(status().is(403));
-        }
-
-        @WithMockUser(roles = { "USER" })
-        @Test
-        public void api_UCSBRequirement_all__user_logged_in__returns_200() throws Exception {
-                mockMvc.perform(get("/api/UCSBRequirement/all"))
-                                .andExpect(status().isOk());
-        }
-
-        // Authorization tests for /api/UCSBRequirement/post
-
-        @Test
-        public void api_UCSBRequirement_post__logged_out__returns_403() throws Exception {
-                mockMvc.perform(post("/api/UCSBRequirement/post"))
-                                .andExpect(status().is(403));
-        }
+        @MockBean
+        UserRepository userRepository;
 
         // Tests with mocks for database actions
 
@@ -101,7 +53,7 @@ public class UCSBRequirementControllerTests extends ControllerTestCase {
                 when(UCSBrequirementRepository.findById(eq(1L))).thenReturn(Optional.of(UCSBRequirement1));
 
                 // act
-                MvcResult response = mockMvc.perform(get("/api/UCSBRequirement?id=1"))
+                MvcResult response = mockMvc.perform(get("/api/UCSBRequirements?id=1"))
                                 .andExpect(status().isOk()).andReturn();
 
                 // assert
@@ -120,7 +72,7 @@ public class UCSBRequirementControllerTests extends ControllerTestCase {
                 when(UCSBrequirementRepository.findById(eq(7L))).thenReturn(Optional.empty());
 
                 // act
-                MvcResult response = mockMvc.perform(get("/api/UCSBRequirement?id=7"))
+                MvcResult response = mockMvc.perform(get("/api/UCSBRequirements?id=7"))
                                 .andExpect(status().isBadRequest()).andReturn();
 
                 // assert
@@ -153,7 +105,7 @@ public class UCSBRequirementControllerTests extends ControllerTestCase {
                 when(UCSBrequirementRepository.findAll()).thenReturn(requirements);
 
                 // act
-                MvcResult response = mockMvc.perform(get("/api/UCSBRequirement/all"))
+                MvcResult response = mockMvc.perform(get("/api/UCSBRequirements/all"))
                                 .andExpect(status().isOk()).andReturn();
 
                 // assert
@@ -177,7 +129,7 @@ public class UCSBRequirementControllerTests extends ControllerTestCase {
 
                 // act
                 MvcResult response = mockMvc.perform(
-                                post("/api/UCSBRequirement/post?requirementCode=Test Requirement Code&requirementTranslation=Test Requirement Translation&collegeCode=Test College Code&objCode=Test Objective Code&courseCount=Test Course Count&units=Test Units&inactive=true&id=0L")
+                                post("/api/UCSBRequirements/post?requirementCode=Test Requirement Code&requirementTranslation=Test Requirement Translation&collegeCode=Test College Code&objCode=Test Objective Code&courseCount=Test Course Count&units=Test Units&inactive=true&id=0L")
                                                 .with(csrf()))
                                 .andExpect(status().isOk()).andReturn();
 
@@ -200,7 +152,7 @@ public class UCSBRequirementControllerTests extends ControllerTestCase {
 
                 // act
                 MvcResult response = mockMvc.perform(
-                                delete("/api/UCSBRequirement?id=1")
+                                delete("/api/UCSBRequirements?id=1")
                                                 .with(csrf()))
                                 .andExpect(status().isOk()).andReturn();
 
@@ -223,7 +175,7 @@ public class UCSBRequirementControllerTests extends ControllerTestCase {
 
                 // act
                 MvcResult response = mockMvc.perform(
-                                delete("/api/UCSBRequirement?id=1")
+                                delete("/api/UCSBRequirements?id=1")
                                                 .with(csrf()))
                                 .andExpect(status().isBadRequest()).andReturn();
 
@@ -257,7 +209,7 @@ public class UCSBRequirementControllerTests extends ControllerTestCase {
 
                 // act
                 MvcResult response = mockMvc.perform(
-                                put("/api/UCSBRequirement?id=1")
+                                put("/api/UCSBRequirements?id=1")
                                                 .contentType(MediaType.APPLICATION_JSON)
                                                 .characterEncoding("utf-8")
                                                 .content(requestBody)
@@ -289,7 +241,7 @@ public class UCSBRequirementControllerTests extends ControllerTestCase {
 
                 // act
                 MvcResult response = mockMvc.perform(
-                                put("/api/UCSBRequirement?id=1")
+                                put("/api/UCSBRequirements?id=1")
                                                 .contentType(MediaType.APPLICATION_JSON)
                                                 .characterEncoding("utf-8")
                                                 .content(requestBody)

@@ -129,7 +129,7 @@ public class UCSBRequirementControllerTests extends ControllerTestCase {
 
                 // act
                 MvcResult response = mockMvc.perform(
-                                post("/api/UCSBRequirements/post?requirementCode=Test Requirement Code&requirementTranslation=Test Requirement Translation&collegeCode=Test College Code&objCode=Test Objective Code&courseCount=Test Course Count&units=Test Units&inactive=true&id=0L")
+                                post("/api/UCSBRequirements/post?id=0L&requirementCode=Test Requirement Code&requirementTranslation=Test Requirement Translation&collegeCode=Test College Code&objCode=Test Objective Code&courseCount=Test Course Count&units=Test Units&inactive=true")
                                                 .with(csrf()))
                                 .andExpect(status().isOk()).andReturn();
 
@@ -171,7 +171,7 @@ public class UCSBRequirementControllerTests extends ControllerTestCase {
                 UCSBRequirement UCSBRequirement1 = UCSBRequirement.builder().id(1L).requirementCode("A1")
                                 .requirementTranslation("English Reading & Composition").collegeCode("ENGR")
                                 .objCode("BA").courseCount(1).units(4).inactive(false).build();
-                when(UCSBrequirementRepository.findById(eq(1L))).thenReturn(Optional.of(UCSBRequirement1));
+                when(UCSBrequirementRepository.findById(eq(1L))).thenReturn(Optional.empty());
 
                 // act
                 MvcResult response = mockMvc.perform(
@@ -182,7 +182,7 @@ public class UCSBRequirementControllerTests extends ControllerTestCase {
                 // assert
                 verify(UCSBrequirementRepository, times(1)).findById(1L);
                 String responseString = response.getResponse().getContentAsString();
-                assertEquals("UCSBRequirement with id 15 not found", responseString);
+                assertEquals("UCSB requirement with id 1 not found", responseString);
         }
 
         @WithMockUser(roles = { "ADMIN" })

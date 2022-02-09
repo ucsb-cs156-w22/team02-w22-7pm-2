@@ -248,7 +248,7 @@ public class UCSBSubjectControllerTests extends ControllerTestCase {
         }
 
         // Test api /delete with Subject id that doesn't exist
-        @WithMockUser(roles = { "USER" })
+        @WithMockUser(roles = { "ADMIN" })
         @Test
         public void api_subject__delete_subject_that_does_not_exist() throws Exception {
                 // arrange

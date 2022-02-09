@@ -192,15 +192,15 @@ public class UCSBRequirementControllerTests extends ControllerTestCase {
                 assertEquals(expectedJson, responseString);
         }
 
-        @WithMockUser(roles = { "USER" })
+        @WithMockUser(roles = { "ADMIN" })
         @Test
-        public void api_UCSBRequirement__user_logged_in__delete_UCSBRequirement() throws Exception {
+        public void api_UCSBRequirement_delete_UCSBRequirement() throws Exception {
                 // arrange
 
-                User u = currentUserService.getCurrentUser().getUser();
-                UCSBRequirement UCSBRequirement1 = UCSBRequirement.builder().title("UCSBRequirement 1")
-                                .details("UCSBRequirement 1").done(false).user(u).id(15L).build();
-                when(UCSBRequirementRepository.findById(eq(15L))).thenReturn(Optional.of(UCSBRequirement1));
+                UCSBRequirement UCSBRequirement1 = UCSBRequirement.builder().id(1L).requirementCode("A1")
+                                .requirementTranslation("English Reading & Composition").collegeCode("ENGR")
+                                .objCode("BA").courseCount(1).units(4).inactive(false).build();
+                when(UCSBrequirementRepository.findById(eq(15L))).thenReturn(Optional.of(UCSBRequirement1));
 
                 // act
                 MvcResult response = mockMvc.perform(
@@ -209,22 +209,21 @@ public class UCSBRequirementControllerTests extends ControllerTestCase {
                                 .andExpect(status().isOk()).andReturn();
 
                 // assert
-                verify(UCSBRequirementRepository, times(1)).findById(15L);
-                verify(UCSBRequirementRepository, times(1)).deleteById(15L);
+                verify(UCSBrequirementRepository, times(1)).findById(15L);
+                verify(UCSBrequirementRepository, times(1)).deleteById(15L);
                 String responseString = response.getResponse().getContentAsString();
                 assertEquals("UCSBRequirement with id 15 deleted", responseString);
         }
 
-        @WithMockUser(roles = { "USER" })
+        @WithMockUser(roles = { "ADMIN" })
         @Test
-        public void api_UCSBRequirement__user_logged_in__delete_UCSBRequirement_that_does_not_exist() throws Exception {
+        public void api_UCSBRequirement_delete_UCSBRequirement_that_does_not_exist() throws Exception {
                 // arrange
 
-                User otherUser = User.builder().id(98L).build();
-                UCSBRequirement UCSBRequirement1 = UCSBRequirement.builder().title("UCSBRequirement 1")
-                                .details("UCSBRequirement 1").done(false).user(otherUser).id(15L)
-                                .build();
-                when(UCSBRequirementRepository.findById(eq(15L))).thenReturn(Optional.empty());
+                UCSBRequirement UCSBRequirement1 = UCSBRequirement.builder().id(1L).requirementCode("A1")
+                                .requirementTranslation("English Reading & Composition").collegeCode("ENGR")
+                                .objCode("BA").courseCount(1).units(4).inactive(false).build();
+                when(UCSBrequirementRepository.findById(eq(15L))).thenReturn(Optional.of(UCSBRequirement1));
 
                 // act
                 MvcResult response = mockMvc.perform(
@@ -233,108 +232,36 @@ public class UCSBRequirementControllerTests extends ControllerTestCase {
                                 .andExpect(status().isBadRequest()).andReturn();
 
                 // assert
-                verify(UCSBRequirementRepository, times(1)).findById(15L);
+                verify(UCSBrequirementRepository, times(1)).findById(15L);
                 String responseString = response.getResponse().getContentAsString();
                 assertEquals("UCSBRequirement with id 15 not found", responseString);
         }
 
-        @WithMockUser(roles = { "USER" })
-        @Test
-        public void api_UCSBRequirement__user_logged_in__cannot_delete_UCSBRequirement_belonging_to_another_user()
-                        throws Exception {
-                // arrange
-
-                User otherUser = User.builder().id(98L).build();
-                UCSBRequirement UCSBRequirement1 = UCSBRequirement.builder().title("UCSBRequirement 1")
-                                .details("UCSBRequirement 1").done(false).user(otherUser).id(31L)
-                                .build();
-                when(UCSBRequirementRepository.findById(eq(31L))).thenReturn(Optional.of(UCSBRequirement1));
-
-                // act
-                MvcResult response = mockMvc.perform(
-                                delete("/api/UCSBRequirement?id=31")
-                                                .with(csrf()))
-                                .andExpect(status().isBadRequest()).andReturn();
-
-                // assert
-                verify(UCSBRequirementRepository, times(1)).findById(31L);
-                String responseString = response.getResponse().getContentAsString();
-                assertEquals("UCSBRequirement with id 31 not found", responseString);
-        }
-
         @WithMockUser(roles = { "ADMIN" })
         @Test
-        public void api_UCSBRequirement__admin_logged_in__delete_UCSBRequirement() throws Exception {
-                // arrange
+        public void api_UCSBRequirement_put_UCSBRequirement() throws Exception {
 
-                User otherUser = User.builder().id(98L).build();
-                UCSBRequirement UCSBRequirement1 = UCSBRequirement.builder().title("UCSBRequirement 1")
-                                .details("UCSBRequirement 1").done(false).user(otherUser).id(16L)
+                UCSBRequirement UCSBRequirement1 = UCSBRequirement.builder().id(1L).requirementCode("A1")
+                                .requirementTranslation("English Reading & Composition").collegeCode("ENGR")
+                                .objCode("BA").courseCount(1).units(4).inactive(false).build();
+
+                UCSBRequirement updatedUCSBRequirement = UCSBRequirement.builder().id(1L).requirementCode("B")
+                                .requirementTranslation("Foreign Language - L&S").collegeCode("L&S")
+                                .objCode("BA").courseCount(1).units(4).inactive(false)
                                 .build();
-                when(UCSBRequirementRepository.findById(eq(16L))).thenReturn(Optional.of(UCSBRequirement1));
-
-                // act
-                MvcResult response = mockMvc.perform(
-                                delete("/api/UCSBRequirement/admin?id=16")
-                                                .with(csrf()))
-                                .andExpect(status().isOk()).andReturn();
-
-                // assert
-                verify(UCSBRequirementRepository, times(1)).findById(16L);
-                verify(UCSBRequirementRepository, times(1)).deleteById(16L);
-                String responseString = response.getResponse().getContentAsString();
-                assertEquals("UCSBRequirement with id 16 deleted", responseString);
-        }
-
-        @WithMockUser(roles = { "ADMIN" })
-        @Test
-        public void api_UCSBRequirement__admin_logged_in__cannot_delete_UCSBRequirement_that_does_not_exist()
-                        throws Exception {
-                // arrange
-
-                when(UCSBRequirementRepository.findById(eq(17L))).thenReturn(Optional.empty());
-
-                // act
-                MvcResult response = mockMvc.perform(
-                                delete("/api/UCSBRequirement/admin?id=17")
-                                                .with(csrf()))
-                                .andExpect(status().isBadRequest()).andReturn();
-
-                // assert
-                verify(UCSBRequirementRepository, times(1)).findById(17L);
-                String responseString = response.getResponse().getContentAsString();
-                assertEquals("UCSBRequirement with id 17 not found", responseString);
-        }
-
-        @WithMockUser(roles = { "USER" })
-        @Test
-        public void api_UCSBRequirement__user_logged_in__put_UCSBRequirement() throws Exception {
-                // arrange
-
-                User u = currentUserService.getCurrentUser().getUser();
-                User otherUser = User.builder().id(999).build();
-                UCSBRequirement UCSBRequirement1 = UCSBRequirement.builder().title("UCSBRequirement 1")
-                                .details("UCSBRequirement 1").done(false).user(u).id(67L).build();
-                // We deliberately set the user information to another user
-                // This shoudl get ignored and overwritten with currrent user when
-                // UCSBRequirement is saved
-
-                UCSBRequirement updatedUCSBRequirement = UCSBRequirement.builder().title("New Title")
-                                .details("New Details").done(true).user(otherUser)
-                                .id(67L)
-                                .build();
-                UCSBRequirement correctUCSBRequirement = UCSBRequirement.builder().title("New Title")
-                                .details("New Details").done(true).user(u).id(67L)
+                UCSBRequirement correctUCSBRequirement = UCSBRequirement.builder().id(1L).requirementCode("B")
+                                .requirementTranslation("Foreign Language - L&S").collegeCode("L&S")
+                                .objCode("BA").courseCount(1).units(4).inactive(false)
                                 .build();
 
                 String requestBody = mapper.writeValueAsString(updatedUCSBRequirement);
                 String expectedReturn = mapper.writeValueAsString(correctUCSBRequirement);
 
-                when(UCSBRequirementRepository.findById(eq(67L))).thenReturn(Optional.of(UCSBRequirement1));
+                when(UCSBrequirementRepository.findById(eq(1L))).thenReturn(Optional.of(UCSBRequirement1));
 
                 // act
                 MvcResult response = mockMvc.perform(
-                                put("/api/UCSBRequirement?id=67")
+                                put("/api/UCSBRequirement?id=1")
                                                 .contentType(MediaType.APPLICATION_JSON)
                                                 .characterEncoding("utf-8")
                                                 .content(requestBody)
@@ -342,137 +269,31 @@ public class UCSBRequirementControllerTests extends ControllerTestCase {
                                 .andExpect(status().isOk()).andReturn();
 
                 // assert
-                verify(UCSBRequirementRepository, times(1)).findById(67L);
-                verify(UCSBRequirementRepository, times(1)).save(correctUCSBRequirement); // should be saved with
+                verify(UCSBrequirementRepository, times(1)).findById(1L);
+                verify(UCSBrequirementRepository, times(1)).save(correctUCSBRequirement); // should be saved with
                                                                                           // correct user
                 String responseString = response.getResponse().getContentAsString();
                 assertEquals(expectedReturn, responseString);
         }
 
-        @WithMockUser(roles = { "USER" })
-        @Test
-        public void api_UCSBRequirement__user_logged_in__cannot_put_UCSBRequirement_that_does_not_exist()
-                        throws Exception {
-                // arrange
-
-                UCSBRequirement updatedUCSBRequirement = UCSBRequirement.builder().title("New Title")
-                                .details("New Details").done(true).id(67L).build();
-
-                String requestBody = mapper.writeValueAsString(updatedUCSBRequirement);
-
-                when(UCSBRequirementRepository.findById(eq(67L))).thenReturn(Optional.empty());
-
-                // act
-                MvcResult response = mockMvc.perform(
-                                put("/api/UCSBRequirement?id=67")
-                                                .contentType(MediaType.APPLICATION_JSON)
-                                                .characterEncoding("utf-8")
-                                                .content(requestBody)
-                                                .with(csrf()))
-                                .andExpect(status().isBadRequest()).andReturn();
-
-                // assert
-                verify(UCSBRequirementRepository, times(1)).findById(67L);
-                String responseString = response.getResponse().getContentAsString();
-                assertEquals("UCSBRequirement with id 67 not found", responseString);
-        }
-
-        @WithMockUser(roles = { "USER" })
-        @Test
-        public void api_UCSBRequirement__user_logged_in__cannot_put_UCSBRequirement_for_another_user()
-                        throws Exception {
-                // arrange
-
-                User otherUser = User.builder().id(98L).build();
-                UCSBRequirement UCSBRequirement1 = UCSBRequirement.builder().title("UCSBRequirement 1")
-                                .details("UCSBRequirement 1").done(false).user(otherUser).id(31L)
-                                .build();
-                UCSBRequirement updatedUCSBRequirement = UCSBRequirement.builder().title("New Title")
-                                .details("New Details").done(true).id(31L).build();
-
-                when(UCSBRequirementRepository.findById(eq(31L))).thenReturn(Optional.of(UCSBRequirement1));
-
-                String requestBody = mapper.writeValueAsString(updatedUCSBRequirement);
-
-                when(UCSBRequirementRepository.findById(eq(67L))).thenReturn(Optional.empty());
-
-                // act
-                MvcResult response = mockMvc.perform(
-                                put("/api/UCSBRequirement?id=31")
-                                                .contentType(MediaType.APPLICATION_JSON)
-                                                .characterEncoding("utf-8")
-                                                .content(requestBody)
-                                                .with(csrf()))
-                                .andExpect(status().isBadRequest()).andReturn();
-
-                // assert
-                verify(UCSBRequirementRepository, times(1)).findById(31L);
-                String responseString = response.getResponse().getContentAsString();
-                assertEquals("UCSBRequirement with id 31 not found", responseString);
-        }
-
         @WithMockUser(roles = { "ADMIN" })
         @Test
-        public void api_UCSBRequirement__admin_logged_in__put_UCSBRequirement() throws Exception {
-                // arrange
-
-                User otherUser = User.builder().id(255L).build();
-                UCSBRequirement UCSBRequirement1 = UCSBRequirement.builder().title("UCSBRequirement 1")
-                                .details("UCSBRequirement 1").done(false).user(otherUser).id(77L)
-                                .build();
-                User yetAnotherUser = User.builder().id(512L).build();
-                // We deliberately put the wrong user on the updated UCSBRequirement
-                // We expect the controller to ignore this and keep the user the same
-                UCSBRequirement updatedUCSBRequirement = UCSBRequirement.builder().title("New Title")
-                                .details("New Details").done(true)
-                                .user(yetAnotherUser)
-                                .id(77L)
-                                .build();
-                UCSBRequirement correctUCSBRequirement = UCSBRequirement.builder().title("New Title")
-                                .details("New Details").done(true).user(otherUser)
-                                .id(77L)
-                                .build();
-
-                String requestBody = mapper.writeValueAsString(updatedUCSBRequirement);
-                String expectedJson = mapper.writeValueAsString(correctUCSBRequirement);
-
-                when(UCSBRequirementRepository.findById(eq(77L))).thenReturn(Optional.of(UCSBRequirement1));
-
-                // act
-                MvcResult response = mockMvc.perform(
-                                put("/api/UCSBRequirement/admin?id=77")
-                                                .contentType(MediaType.APPLICATION_JSON)
-                                                .characterEncoding("utf-8")
-                                                .content(requestBody)
-                                                .with(csrf()))
-                                .andExpect(status().isOk()).andReturn();
-
-                // assert
-                verify(UCSBRequirementRepository, times(1)).findById(77L);
-                verify(UCSBRequirementRepository, times(1)).save(correctUCSBRequirement);
-                String responseString = response.getResponse().getContentAsString();
-                assertEquals(expectedJson, responseString);
-        }
-
-        @WithMockUser(roles = { "ADMIN" })
-        @Test
-        public void api_UCSBRequirement__admin_logged_in__cannot_put_UCSBRequirement_that_does_not_exist()
+        public void api_UCSBRequirement_cannot_put_UCSBRequirement_that_does_not_exist()
                         throws Exception {
                 // arrange
 
-                User otherUser = User.builder().id(345L).build();
-                UCSBRequirement updatedUCSBRequirement = UCSBRequirement.builder().title("New Title")
-                                .details("New Details").done(true).user(otherUser)
-                                .id(77L)
+                UCSBRequirement updatedUCSBRequirement = UCSBRequirement.builder().id(1L).requirementCode("B")
+                                .requirementTranslation("Foreign Language - L&S").collegeCode("L&S")
+                                .objCode("BA").courseCount(1).units(4).inactive(false)
                                 .build();
 
                 String requestBody = mapper.writeValueAsString(updatedUCSBRequirement);
 
-                when(UCSBRequirementRepository.findById(eq(77L))).thenReturn(Optional.empty());
+                when(UCSBrequirementRepository.findById(eq(1L))).thenReturn(Optional.empty());
 
                 // act
                 MvcResult response = mockMvc.perform(
-                                put("/api/UCSBRequirement/admin?id=77")
+                                put("/api/UCSBRequirement?id=1")
                                                 .contentType(MediaType.APPLICATION_JSON)
                                                 .characterEncoding("utf-8")
                                                 .content(requestBody)
@@ -480,9 +301,8 @@ public class UCSBRequirementControllerTests extends ControllerTestCase {
                                 .andExpect(status().isBadRequest()).andReturn();
 
                 // assert
-                verify(UCSBRequirementRepository, times(1)).findById(77L);
+                verify(UCSBrequirementRepository, times(1)).findById(1L);
                 String responseString = response.getResponse().getContentAsString();
-                assertEquals("UCSBRequirement with id 77 not found", responseString);
+                assertEquals("UCSBRequirement with id 1 not found", responseString);
         }
-
 }

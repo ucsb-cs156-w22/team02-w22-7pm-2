@@ -113,7 +113,6 @@ public class CollegiateSubredditController extends ApiController {
             return cse.error;
         }
       
-
         incomingCollegiateSubreddit.setId(id);
         collegiateSubredditRepository.save(incomingCollegiateSubreddit);
 
@@ -137,7 +136,7 @@ public class CollegiateSubredditController extends ApiController {
 
 	collegiateSubredditRepository.deleteById(id);
 
-	return ResponseEntity.ok().body(String.format("record ", id ," deleted"));
+	return ResponseEntity.ok().body(String.format("CollegiateSubreddit with id " + id + " deleted"));
 
 }
 
@@ -149,9 +148,9 @@ public class CollegiateSubredditController extends ApiController {
 		{
 			cse.error = ResponseEntity
 					.badRequest()
-					.body(String.format("id ", cse.id, "not found"));
+					.body(String.format("CollegiateSubreddit with id "+ cse.id + " not found"));
 		}
 		return cse;
 	}
-	
+
 }

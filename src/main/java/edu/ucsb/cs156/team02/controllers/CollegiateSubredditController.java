@@ -144,6 +144,8 @@ public class CollegiateSubredditController extends ApiController {
 					.badRequest()
 					.body(String.format("CollegiateSubreddit with id "+ cse.id + " not found"));
 		}
+		else
+			cse.reddit = optionalCollegiateSubreddit.get();
 		return cse;
 	}
 

@@ -42,7 +42,7 @@ public class UCSBSubjectControllerTests extends ControllerTestCase {
 
 
         //test for /all endpoint
-
+    @WithMockUser(roles = { "ADMIN" })
     @Test
     public void api_all() throws Exception {
 
@@ -70,7 +70,7 @@ public class UCSBSubjectControllerTests extends ControllerTestCase {
 
 
         //tests for /post endpoint
-
+    @WithMockUser(roles = { "ADMIN" })
     @Test
     public void api_post() throws Exception {
         // arrange
@@ -101,7 +101,7 @@ public class UCSBSubjectControllerTests extends ControllerTestCase {
 
 
         //test for /get with id
-
+    @WithMockUser(roles = { "ADMIN" })
     @Test
     public void api_get_id_returns_a_subject_that_exists() throws Exception {
 
@@ -122,6 +122,7 @@ public class UCSBSubjectControllerTests extends ControllerTestCase {
     }
 
     //Test api /get UCSB Subject id that doesn't exist
+    @WithMockUser(roles = { "ADMIN" })
     @Test
     public void api_get_id_returns_a_subject_that_does_not_exist() throws Exception {
 
@@ -139,7 +140,83 @@ public class UCSBSubjectControllerTests extends ControllerTestCase {
         assertEquals("ucsb subject with id 7 not found", responseString);
     }
 
-    
+
+    //Test api /put subject given id
+    @WithMockUser(roles = { "ADMIN" })
+    @Test
+    public void api_subject_put_subject() throws Exception {
+        // arrange
+
+        UCSBSubject ucsbsubject1 = UCSBSubject.builder()
+                .subjectTranslation("Test Subject Translation")
+                .deptCode("Test Department Code")
+                .collegeCode("Test College Code")
+                .subjectCode("Test Subject Code")
+                .relatedDeptCode("Test related department code")
+                .inactive(true)
+                .id(77L)
+                .build();
+
+        UCSBSubject updatedUCSBSubject = UCSBSubject.builder().subjectTranslation("translation 1").deptCode("dept code 1").collegeCode("college code 1").subjectCode("code 2").relatedDeptCode("related dept code 1").inactive(false).id(77L).build();
+        UCSBSubject correctUCSBSubject = UCSBSubject.builder().subjectTranslation("translation 1").deptCode("dept code 1").collegeCode("college code 1").subjectCode("code 2").relatedDeptCode("related dept code 1").inactive(false).id(77L).build();
+
+        String requestBody = mapper.writeValueAsString(updatedUCSBSubject);
+        String expectedReturn = mapper.writeValueAsString(correctUCSBSubject);
+
+        when(ucsbsubjectRepository.findById(eq(77L))).thenReturn(Optional.of(ucsbsubject1));
+
+        // act
+        MvcResult response = mockMvc.perform(
+                put("/api/UCSBSubjects?id=77")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .characterEncoding("utf-8")
+                        .content(requestBody)
+                        .with(csrf()))
+                .andExpect(status().isOk()).andReturn();
+
+        // assert
+        verify(ucsbsubjectRepository, times(1)).findById(77L);
+        verify(ucsbsubjectRepository, times(1)).save(correctUCSBSubject);
+        String responseString = response.getResponse().getContentAsString();
+        assertEquals(expectedReturn, responseString);
+    }
+
+    // Test api /put with Subject id that doesn't exist
+    @WithMockUser(roles = { "ADMIN" })
+    @Test
+    public void api_subject_put_that_does_not_exist() throws Exception {
+        // arrange
+
+        UCSBSubject updatedUCSBSubject = UCSBSubject.builder()
+                .subjectTranslation("Test Subject Translation")
+                .deptCode("Test Department Code")
+                .collegeCode("Test College Code")
+                .subjectCode("Test Subject Code")
+                .relatedDeptCode("Test related department code")
+                .inactive(true)
+                .id(77L)
+                .build();
+
+        String requestBody = mapper.writeValueAsString(updatedUCSBSubject);
+
+        when(ucsbsubjectRepository.findById(eq(77L))).thenReturn(Optional.empty());
+
+        // act
+        MvcResult response = mockMvc.perform(
+                put("/api/UCSBSubjects?id=77")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .characterEncoding("utf-8")
+                        .content(requestBody)
+                        .with(csrf()))
+                .andExpect(status().isBadRequest()).andReturn();
+
+        // assert
+        verify(ucsbsubjectRepository, times(1)).findById(77L);
+        String responseString = response.getResponse().getContentAsString();
+        assertEquals("ucsb subject with id 77 not found", responseString);
+    }
+
+
 
 
 

@@ -53,7 +53,7 @@ public class UCSBSubjectController extends ApiController{
     ObjectMapper mapper;
 
     @ApiOperation(value = "Get a list of UCSB subjects")
-    //@PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/all")
         public Iterable<UCSBSubject> UCSBSubjectInfo() {
             loggingService.logMethod();
@@ -63,7 +63,7 @@ public class UCSBSubjectController extends ApiController{
         }
 
     @ApiOperation(value = "Create a new UCSB subject")
-    //@PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/post")
     public UCSBSubject postUCSBSubject(
             @ApiParam("subject Translation") @RequestParam String subjectTranslation,
@@ -86,7 +86,8 @@ public class UCSBSubjectController extends ApiController{
     }
 
     @ApiOperation(value = "Get a UCSB Subject with given id")
-    //@PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+
     @GetMapping("")
     public ResponseEntity<String> getUCSBSubjectById(
         @ApiParam("id") @RequestParam Long id) throws JsonProcessingException {
@@ -102,14 +103,15 @@ public class UCSBSubjectController extends ApiController{
         String body = mapper.writeValueAsString(ucsbsub_error.sub);
         return ResponseEntity.ok().body(body);
     }
-/*
+
     @ApiOperation(value = "Update a single UCSBSubject")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("")
     public ResponseEntity<String> putSubjectById(
             @ApiParam("id") @RequestParam Long id,
             @RequestBody @Valid UCSBSubject incomingUCSBSubject) throws JsonProcessingException {
         loggingService.logMethod();
-
+        
         UCSBSubjectOrError ucsbsub_error = new UCSBSubjectOrError(id);
 
         ucsbsub_error = doesUCSBSubjectExist(ucsbsub_error);
@@ -117,11 +119,12 @@ public class UCSBSubjectController extends ApiController{
             return ucsbsub_error.error;
         }
 
+        incomingUCSBSubject.setId(id);
         ucsbsubjectRepository.save(incomingUCSBSubject);
 
         String body = mapper.writeValueAsString(incomingUCSBSubject);
         return ResponseEntity.ok().body(body);
-    }*/
+    }
 
         public UCSBSubjectOrError doesUCSBSubjectExist(UCSBSubjectOrError ucsbsub_error) {
 
@@ -136,7 +139,5 @@ public class UCSBSubjectController extends ApiController{
             }
             return ucsbsub_error;
         }
-
-
 
 }

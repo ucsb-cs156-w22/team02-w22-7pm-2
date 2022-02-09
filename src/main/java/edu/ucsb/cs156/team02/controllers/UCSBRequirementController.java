@@ -164,7 +164,7 @@ public class UCSBRequirementController extends ApiController {
         if (optionalUCSBRequirement.isEmpty()) {
             toe.error = ResponseEntity
                     .badRequest()
-                    .body(String.format("UCSBRequirement with id %d not found", toe.id));
+                    .body(String.format("UCSB requirement with id %d not found", toe.id));
         } else {
             toe.UCSBRequirement = optionalUCSBRequirement.get();
         }

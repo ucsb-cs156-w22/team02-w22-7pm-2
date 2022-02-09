@@ -121,15 +121,16 @@ public class UCSBRequirementControllerTests extends ControllerTestCase {
         public void api_UCSBRequirement_post() throws Exception {
                 // arrange
 
-                UCSBRequirement expectedUCSBRequirement = UCSBRequirement.builder().id(1L).requirementCode("A1")
-                                .requirementTranslation("English Reading & Composition").collegeCode("ENGR")
-                                .objCode("BA").courseCount(1).units(4).inactive(false).build();
+                UCSBRequirement expectedUCSBRequirement = UCSBRequirement.builder().id(0L)
+                                .requirementCode("Test requirement code")
+                                .requirementTranslation("Test requirement translation").collegeCode("Test college code")
+                                .objCode("Test object code").courseCount(1).units(4).inactive(true).build();
 
                 when(UCSBrequirementRepository.save(eq(expectedUCSBRequirement))).thenReturn(expectedUCSBRequirement);
 
                 // act
                 MvcResult response = mockMvc.perform(
-                                post("/api/UCSBRequirements/post?id=0L&requirementCode=Test Requirement Code&requirementTranslation=Test Requirement Translation&collegeCode=Test College Code&objCode=Test Objective Code&courseCount=Test Course Count&units=Test Units&inactive=true")
+                                post("/api/UCSBRequirements/post?requirementCode=Test requirement code&requirementTranslation=Test requirement translation&collegeCode=Test college code&objCode=Test object code&courseCount=1&units=4&inactive=true&id=0L")
                                                 .with(csrf()))
                                 .andExpect(status().isOk()).andReturn();
 

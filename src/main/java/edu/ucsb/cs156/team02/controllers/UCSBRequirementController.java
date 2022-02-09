@@ -57,7 +57,7 @@ public class UCSBRequirementController extends ApiController {
 
     @ApiOperation(value = "List all UCSB requirements")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @GetMapping("/admin/all")
+    @GetMapping("/all")
     public Iterable<UCSBRequirement> allUsersUCSBRequirements() {
         loggingService.logMethod();
         Iterable<UCSBRequirement> UCSBRequirements = UCSBRequirementRepository.findAll();
